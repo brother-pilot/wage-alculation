@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace wageсalculation
+namespace wageсalculation.Persistance
 {
     public class Freelancer : Role
     {

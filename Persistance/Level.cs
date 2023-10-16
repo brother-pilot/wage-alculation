@@ -1,4 +1,4 @@
-﻿namespace wageсalculation
+﻿namespace wageсalculation.Persistance
 {
     public enum Level
     {

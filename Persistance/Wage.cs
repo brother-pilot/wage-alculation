@@ -1,15 +1,18 @@
 ﻿using System;
 
-namespace wageсalculation
+namespace wageсalculation.Persistance
 {
     public class Wage
     {
+        /// <summary>
+        /// class for wage data and case of culculation
+        /// </summary>
         const int hourInMonth= 160;
-        public decimal MonthWage { get; private set; }
-        public decimal Bonus { get; private set; }
-        public bool IsBonus { get; private set; }
-        public bool IsMonthWage { get; private set; }
-        public decimal HourWage { get; private set; }
+        public decimal MonthWage { get; }
+        public decimal Bonus { get; }
+        public bool IsBonus { get; }
+        public bool IsMonthWage { get; }
+        public decimal HourWage { get; }
 
         public Wage(decimal monthWage, decimal bonus,  
             bool isMonthWage = true, bool isBonus=true,decimal hourWage =0)

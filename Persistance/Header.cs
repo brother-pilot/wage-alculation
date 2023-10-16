@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace wageсalculation
+namespace wageсalculation.Persistance
 {
     public class Header: Role
     {
@@ -20,7 +20,7 @@ namespace wageсalculation
         public void AddHour(InfoWork work)
         {
             Console.WriteLine("bola");
-            w=>mod.
+            //w=>mod.
         }
         public void MakeReport(TimeInterval ti)
         {

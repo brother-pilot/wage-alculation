@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace wageсalculation
+namespace wageсalculation.Persistance
 {
-    internal class Model
+    public class Model
     {
         public List<User> users = new List<User>();
         public List<InfoWork> infoWorksHeader = new List<InfoWork>();
@@ -142,7 +142,7 @@ namespace wageсalculation
             // FileMode.OpenOrCreate - ЕСЛИ: существует ТО: открыть ИНАЧЕ: создать новый
             // FileAccess.Read - только для чтения,
             // FileShare.None - Совместный доступ - Нет.
-            FileStream stream = fileUser.Open(FileMode.OpenOrCreate, FileAccess.Read, FileShare.None);
+            FileStream stream = fileUser.Open(FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
             StreamWriter streamW = new StreamWriter(stream);
             users.ForEach(u=>streamW.WriteLine(u.name+","+ ConvertFromLevelToString(u.level)));
             WriteOthersFiles(infoWorksHeader, "infoWorksHeader.csv");
@@ -156,7 +156,7 @@ namespace wageсalculation
             // FileMode.OpenOrCreate - ЕСЛИ: существует ТО: открыть ИНАЧЕ: создать новый
             // FileAccess.Read - только для чтения,
             // FileShare.None - Совместный доступ - Нет.
-            FileStream stream = fileUser.Open(FileMode.OpenOrCreate, FileAccess.Read, FileShare.None);
+            FileStream stream = fileUser.Open(FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
             StreamWriter streamW = new StreamWriter(stream);
             list.ForEach(x => streamW.WriteLine(x.Data + "," + x.Name+","+x.Time+","+x.Work));
         }

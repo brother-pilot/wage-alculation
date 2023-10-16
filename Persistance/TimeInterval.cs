@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace wageсalculation
+namespace wageсalculation.Persistance
 {
     public class TimeInterval
     {
