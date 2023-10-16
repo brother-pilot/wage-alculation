@@ -16,7 +16,6 @@ namespace wageсalculation
         public Model()
         {
             //инициируем путь для хранения файлов
-            //string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"\Data");
             //узнаем путь к текущей папке проекта
             string pathExe = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             Console.WriteLine(pathExe);
@@ -26,7 +25,6 @@ namespace wageсalculation
 
         void ReadFiles()
         {
-            var ttt=path;
             var directory = new DirectoryInfo(path);
 
             // Проверка на существование указанной директории.
@@ -182,11 +180,5 @@ namespace wageсalculation
             }
         }
 
-        void StopProgram(string message)
-        {
-            Console.WriteLine(message);
-            Console.WriteLine("Нажмите enter для выхода из программы!");
-            Console.ReadLine();
-        }
     }
 }

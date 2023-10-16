@@ -4,10 +4,10 @@ namespace wageсalculation
 {
     public class InfoWork
     {
-        public DateTime Data { get; private set; }
-        public string Name { get; private set; }
-        public int Time { get; private set; }
-        public string Work { get; private set; }
+        public DateTime Data { get;  }
+        public string Name { get;  }
+        public int Time { get;  }
+        public string Work { get;  }
 
         public InfoWork(DateTime Data, string Name, int Time, string Work)
         {

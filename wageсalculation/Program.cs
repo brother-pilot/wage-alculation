@@ -7,18 +7,21 @@ namespace wageсalculation
     {
         Dictionary<string, string> mesRole = new Dictionary<string, string>()
         {
-            {"AddHour","Добавить часы работы"},
+            {"AddHour","Добавить часы работы" },
             {"MakeReport","Просмотреть отчет по отработанным часам"},
             {"AddUser","Добавить сотрудника"},
             {"MakeReportInOtherUser","Просмотреть отчет по конкретному сотруднику"},
-            {"MakeReportAllUsers","Просмотреть отчет по всем сотрудникам"}
+            {"MakeReportAllUsers","Просмотреть отчет по всем сотрудникам"},
+            {"Exit","Выход из программы"}
         };
 
         static Model mod;
         static User user;
         
-        Role userType;
-        Dictionary<string, Action<InfoWork>> command; 
+        //Role userType;
+        Dictionary<string, Action<object>> command;
+        Dictionary<int, string> commandKey =new Dictionary<int, string>();
+        //string action;
 
         static void Main(string[] args)
         {
@@ -32,52 +35,117 @@ namespace wageсalculation
                 name = Console.ReadLine();
             }
             user = mod.users.Find(u => u.name == name);
-            p.CastToRole();
-            p.ShowDo();
             p.InitilizeCommand();
+            while (true)
+            {
+                p.ShowDo();
+                var key=p.ReadAction();
+                p.DoCommand(key);
+            }
         }
 
-        private void CastToRole()
+        private void DoCommand(int key)
         {
-            switch (user.level)
+            var action = command[commandKey[key]];
+            switch (commandKey[key])
             {
-                case Level.Head:
-                    userType=user.role as Header<T>;
+                case "Exit":
+                    action("Завершение работы программы...");
                     break;
-                case Level.Worker:
-                    userType = user.role as Worker;
+                case "AddHour":
+                    AddHour(action);
                     break;
-                case Level.Freelancer:
-                    userType = user.role as Freelancer;
+                case "MakeReport":
+                    ;
                     break;
             }
         }
+
+        private void AddHour(Action<object> action)
+        {
+            Console.WriteLine("Добавляем часы работы. Введите дату работы в формате ГГГГ.ММ.ДД");
+            DateTime dt;
+            while (!DateTime.TryParse(Console.ReadLine(), out dt))
+                Console.WriteLine("Неправильная команда. Введите номер еще раз");
+            string name;
+            if (user.role.GetType() == typeof(Header))
+            {
+                Console.WriteLine("Введите имя пользователя");
+                name = Console.ReadLine();
+                while (!mod.users.Exists(u => u.name == name))
+                {
+                    Console.WriteLine("Ошибка! Введено неизвестное имя");
+                    name = Console.ReadLine();
+                }
+            }
+            else
+                name = user.name;
+            Console.WriteLine("Введите количество отработанных часов");
+            int hours = -1;
+            //если введено неправильно но ходим по циклу
+            while (!Int32.TryParse(Console.ReadLine(), out hours) || hours < 1 || hours > 24)
+                Console.WriteLine("Количество часов должно быть целым числом от 1 до 24");
+            Console.WriteLine("Введение описание работы");
+            string work = Console.ReadLine();
+            //action(new InfoWork(dt, name, hours, work));
+            mod.infoWorksHeader.Add(new InfoWork(dt, name, hours, work));
+        }
+
+        int ReadAction()
+        {
+            int kafn = -1;
+            //если введено неправильно но ходим по циклу
+            while (!Int32.TryParse(Console.ReadLine(), out kafn) || kafn < 1 || kafn >= command.Count+1)
+                Console.WriteLine("Неправильная команда. Введите номер еще раз");
+            return kafn;
+            //ttt("sdf");
+            //Console.WriteLine(commandKey[kafn]);
+        }
+
+        //private void CastToRole()
+        //{
+        //    switch (user.level)
+        //    { 
+        //        case Level.Head:
+        //            userType=user.role as Header;
+        //            break;
+        //        case Level.Worker:
+        //            userType = user.role as Worker;
+        //            break;
+        //        case Level.Freelancer:
+        //            userType = user.role as Freelancer;
+        //            break;
+        //    }
+        //}
 
         private void ShowDo()
         {
-            for (int i = 0; i < user.role.methods.Length; i++)
-            {
-                Console.WriteLine("("+i+") "+ mesRole[user.role.methods[i]]);
-            }
-            Console.WriteLine("(" + user.role.methods.Length+1 + ") Выход из программы");
+            Console.WriteLine("Выберите желаемое действие (введите номер)");
+            foreach (var item in commandKey)
+                Console.WriteLine("(" + item.Key + ") " + item.Value);
         }
 
         private void InitilizeCommand()
         {
-            //user.role.RegisterCommand("AddHour", user.role.del);
-            //command = new Dictionary<string, Action<InfoWork>>();
-
-            for (int i = 0; i < user.role.methods.Length; i++)
-            {
-                command = user.role.commands;
-                //command[mesRole[user.role.methods[i]]] = user.role.methods[i];
-            }
-            Console.WriteLine("(" + user.role.methods.Length + 1 + ") Выход из программы");
+            command = user.role.commands;
+            command["Exit"]= (s)=> StopProgram(s as string);
+            int i = 0;
+            foreach (var item in command)
+                commandKey[++i] = item.Key;
         }
 
             void InitialazeData()
         {
             mod = new Model();       
+        }
+
+        void StopProgram(string message)
+        {
+            mod.WriteFiles();
+            Console.WriteLine(message);
+            Console.WriteLine("Нажмите enter для выхода из программы!");
+            Console.ReadLine();
+            Environment.Exit(0);
         }
     }
 }

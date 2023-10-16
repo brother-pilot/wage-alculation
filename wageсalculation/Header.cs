@@ -3,28 +3,26 @@ using System.Collections.Generic;
 
 namespace wageсalculation
 {
-    public class Header<T>: Role<T>, IDo
+    public class Header: Role
     {
         public Header() 
         {
             wage = new Wage(120000, 20000);
-            methods = new string[5];
-            methods[0] = "AddHour";
-            methods[1] = "MakeReport";
-            methods[2] = "AddUser";
-            methods[3] = "MakeReportInOtherUser";
-            methods[4] = "MakeReportAllUsers";
-            //del += w=> AddHour(w);
-            commands = new Dictionary<string, Action<T>>();
-            commands["AddHour"] = w => AddHour(w);
+            commands = new Dictionary<string, Action<object>>();
+            commands["AddHour"] = w => AddHour(w as InfoWork);
+            commands["MakeReport"] = ti => MakeReport(ti as TimeInterval);
+            commands["AddUser"] = u => AddUser(u as User);
+            commands["MakeReportInOtherUser"] = ud => MakeReportInOtherUser(ud as UserData);
+            commands["MakeReportAllUsers"] = ti => MakeReportAllUsers(ti as TimeInterval);
         }
 
 
         public void AddHour(InfoWork work)
         {
-            Console.WriteLine("bola"); ;
+            Console.WriteLine("bola");
+            w=>mod.
         }
-        public void MakeReport(DateTime startData, DateTime endData)
+        public void MakeReport(TimeInterval ti)
         {
             throw new NotImplementedException();
         }
@@ -34,12 +32,12 @@ namespace wageсalculation
             throw new NotImplementedException();
         }
 
-        public void MakeReportInOtherUser(DateTime startData, DateTime endData, User user)
+        public void MakeReportInOtherUser(UserData ud)
         {
             throw new NotImplementedException();
         }
 
-        public void MakeReportAllUsers(DateTime startData, DateTime endData)
+        public void MakeReportAllUsers(TimeInterval ti)
         {
             throw new NotImplementedException();
         }

@@ -3,17 +3,15 @@ using System.Collections.Generic;
 
 namespace wageсalculation
 {
-    public class Worker : Role,IDo
+    public class Worker : Role
     {
         //public string[] methods { get; set; }
         public Worker()
         {
             wage = new Wage(120000, 240000);
-            methods = new string[2];
-            methods[0] = "AddHour";
-            methods[1] = "MakeReport";
-            //del+= AddHour2();
-            commands= new Dictionary<string, Action<InfoWork>>();
+            commands = new Dictionary<string, Action<object>>();
+            commands["AddHour"] = w => AddHour(w as InfoWork);
+            commands["MakeReport"] = ti => MakeReport(ti as TimeInterval);
         }
 
 
@@ -22,7 +20,7 @@ namespace wageсalculation
             throw new NotImplementedException();
         }
 
-        public void MakeReport(DateTime startData, DateTime endData)
+        public void MakeReport(TimeInterval ti)
         {
             throw new NotImplementedException();
         }

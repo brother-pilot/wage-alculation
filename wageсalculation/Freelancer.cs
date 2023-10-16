@@ -1,24 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace wageсalculation
 {
-    public class Freelancer : Role, IDo
+    public class Freelancer : Role
     {
         //public string[] methods { get; set; }
 
         public Freelancer()
         {
             wage = new Wage(0, 0, false, false, 1000);
-            methods = new string[2];
-            methods[0] = "AddHour";
-            methods[1] = "MakeReport";
+            commands = new Dictionary<string, Action<object>>();
+            commands["AddHour"] = w => AddHour(w as InfoWork);
+            commands["MakeReport"] = ti => MakeReport(ti as TimeInterval);
         }
         public void AddHour(InfoWork work)
         {
             throw new NotImplementedException();
         }
 
-        public void MakeReport(DateTime startData, DateTime endData)
+        public void MakeReport(TimeInterval ti)
         {
             throw new NotImplementedException();
         }
