@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.34031.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wageсalculation", "wageсalculation\wageсalculation.csproj", "{484716DA-7AD1-40E6-9C14-3168DFC09E87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "wageсalculation", "wageсalculation\wageсalculation.csproj", "{484716DA-7AD1-40E6-9C14-3168DFC09E87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{94FD3826-AABB-468D-A80F-6932064886EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistance", "Persistance\Persistance.csproj", "{50569B62-2CED-41D7-8F70-BB4FAB697A31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{484716DA-7AD1-40E6-9C14-3168DFC09E87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{484716DA-7AD1-40E6-9C14-3168DFC09E87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{484716DA-7AD1-40E6-9C14-3168DFC09E87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94FD3826-AABB-468D-A80F-6932064886EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94FD3826-AABB-468D-A80F-6932064886EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94FD3826-AABB-468D-A80F-6932064886EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94FD3826-AABB-468D-A80F-6932064886EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50569B62-2CED-41D7-8F70-BB4FAB697A31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50569B62-2CED-41D7-8F70-BB4FAB697A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50569B62-2CED-41D7-8F70-BB4FAB697A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50569B62-2CED-41D7-8F70-BB4FAB697A31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
