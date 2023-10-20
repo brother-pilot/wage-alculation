@@ -4,7 +4,6 @@
     {
         Head,
         Worker,
-        Freelancer,
-        None
+        Freelancer
     }
 }

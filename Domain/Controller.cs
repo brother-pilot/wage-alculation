@@ -6,6 +6,7 @@ namespace wageсalculation.Domain
 {
     public class Controller
     {
+        //возможные действия пользователя
         Dictionary<string, string> mesRole = new Dictionary<string, string>()
         {
             {"AddHour","Добавить часы работы" },
@@ -16,16 +17,21 @@ namespace wageсalculation.Domain
             {"Exit","Выход из программы"}
         };
 
-        static Model mod;
-        static User user;
+        private Model mod;
+        //активный юзер под которым произошел логин
+        private User user;
+        private IView view;//для передачи данных из приложения в UI
 
         //Role userType;
         Dictionary<string, Action<object>> command;
         Dictionary<int, string> commandKey = new Dictionary<int, string>();
         //string action;
-        public Controller(IView View, Model model)
+        public Controller(IView v, Model model)
         {
             mod = model;
+            mod.ReadFiles();
+            view = v;
+            view.Status="Пожалуйста, введите имя:";
             Console.WriteLine("Пожалуйста, введите имя:");
             string name = Console.ReadLine();
             while (!mod.users.Exists(u => u.name == name))
@@ -37,7 +43,7 @@ namespace wageсalculation.Domain
             InitilizeCommand();
             while (true)
             {
-                ShowDo();
+                view.ShowDo(commandKey);
                 var key = ReadAction();
                 DoCommand(key);
             }
@@ -71,7 +77,7 @@ namespace wageсalculation.Domain
             }
         }
 
-        private void AddHour(Action<object> action)
+        public static void AddHour(Action<object> action)
         {
             Console.WriteLine("Добавляем часы работы. Введите дату работы в формате ГГГГ.ММ.ДД");
             DateTime dt;
@@ -97,16 +103,10 @@ namespace wageсalculation.Domain
                 Console.WriteLine("Количество часов должно быть целым числом от 1 до 24");
             Console.WriteLine("Введение описание работы");
             string work = Console.ReadLine();
-            //action(new InfoWork(dt, name, hours, work));
             mod.infoWorksHeader.Add(new InfoWork(dt, name, hours, work));
         }
 
-        private void ShowDo()
-        {
-            Console.WriteLine("Выберите желаемое действие (введите номер)");
-            foreach (var item in commandKey)
-                Console.WriteLine("(" + item.Key + ") " + item.Value);
-        }
+        
 
         private void InitilizeCommand()
         {

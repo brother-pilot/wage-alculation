@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using wageсalculation.Domain;
 using wageсalculation.Persistance;
 
@@ -16,5 +17,12 @@ namespace wageсalculation
 
         public string Status 
         { get => labelStatus; set => this.labelStatus = value; }
+
+        public void ShowDo(Dictionary<int, string> commandKey)
+        {
+            Console.WriteLine("Выберите желаемое действие (введите номер)");
+            foreach (var item in commandKey)
+                Console.WriteLine("(" + item.Key + ") " + item.Value);
+        }
     }
 }

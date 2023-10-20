@@ -11,5 +11,7 @@ namespace wageсalculation.Domain
 
         //строка состояния
         string Status { get; set; }
+
+        public void ShowDo(Dictionary<int, string> commandKey) { }
     }
 }

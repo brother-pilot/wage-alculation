@@ -7,6 +7,9 @@ namespace wageсalculation.Persistance
 {
     public class Model
     {
+        /// <summary>
+        /// Class for safe data
+        /// </summary>
         public List<User> users = new List<User>();
         public List<InfoWork> infoWorksHeader = new List<InfoWork>();
         public List<InfoWork> infoWorksWorker = new List<InfoWork>();
@@ -20,10 +23,9 @@ namespace wageсalculation.Persistance
             string pathExe = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             Console.WriteLine(pathExe);
             path = Path.Combine(pathExe, "Data");
-            ReadFiles();
         }
 
-        void ReadFiles()
+        public void ReadFiles()
         {
             var directory = new DirectoryInfo(path);
 
@@ -109,9 +111,7 @@ namespace wageсalculation.Persistance
                         item2 = Level.Freelancer;
                         break;
                     default:
-                        item2 = Level.None;
-                        Console.WriteLine("Не верная структура файла Users");
-                        break;
+                        throw new NotImplementedException("Не верная структура файла Users");
                 }
                 users.Add(new User(line.Split(',')[0], item2));
             }

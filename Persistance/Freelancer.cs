@@ -10,18 +10,11 @@ namespace wageсalculation.Persistance
         public Freelancer()
         {
             wage = new Wage(0, 0, false, false, 1000);
-            commands = new Dictionary<string, Action<object>>();
-            commands["AddHour"] = w => AddHour(w as InfoWork);
-            commands["MakeReport"] = ti => MakeReport(ti as TimeInterval);
+            commands = new Dictionary<int, Command>();
+            commands[1] = Command.AddHour;
+            commands[2] = Command.MakeReport;
+            commands[6] = Command.Exit;
         }
-        public void AddHour(InfoWork work)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void MakeReport(TimeInterval ti)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

@@ -5,15 +5,11 @@ namespace wageсalculation.Persistance
 {
     public class Role
     {  
+        //класс для соединения сущностей Header, Worker, Freelancer вместе+для уменьшения
+        //дублирования кода в этих сущностях
         protected Wage wage;
         //public string[] methods;
         //public Action<InfoWork> del;
-        public Dictionary<string, Action<object>> commands { get; set; }
-
-        public void AddHour(InfoWork work)
-        {
-            
-            Console.WriteLine("bola");
-        }
+        public Dictionary<int, Command> commands { get; set; }     
     }
 }
