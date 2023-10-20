@@ -9,7 +9,7 @@ namespace wageсalculation.Domain
 {
     interface IController
     {
-        User Logon();
+        void Logon();
 
     }
 }
