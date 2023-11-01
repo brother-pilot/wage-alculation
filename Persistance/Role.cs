@@ -7,10 +7,10 @@ namespace wageсalculation.Persistance
     {  
         //класс для соединения сущностей Header, Worker, Freelancer вместе+для уменьшения
         //дублирования кода в этих сущностях
-        protected Wage wage;
+        public Wage wage;
         //public string[] methods;
         //public Action<InfoWork> del;
-        public Dictionary<int, Command> commands { get; set; }
+        public Dictionary<int, Command> Commands { get;} = new Dictionary<int, Command>();
 
         //возможные действия пользователя
         public readonly Dictionary<Command, string> mesRole = new Dictionary<Command, string>()

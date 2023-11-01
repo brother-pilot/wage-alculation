@@ -4,6 +4,7 @@
     {
         Head,
         Worker,
-        Freelancer
+        Freelancer,
+        Test
     }
 }

@@ -8,11 +8,11 @@ namespace wageсalculation.Persistance
         //public string[] methods { get; set; }
         public Worker()
         {
-            wage = new Wage(120000, 240000);
-            commands = new Dictionary<int, Command>();
-            commands[1] = Command.AddHour;
-            commands[2] = Command.MakeReport;
-            commands[6] = Command.Exit;
+            wage = new Wage(120000, 120000);
+            //Commands = new Dictionary<int, Command>();
+            Commands[1] = Command.AddHour;
+            Commands[2] = Command.MakeReport;
+            Commands[6] = Command.Exit;
         }
 
 

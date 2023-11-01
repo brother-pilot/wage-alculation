@@ -23,6 +23,8 @@ namespace wageсalculation.Persistance
                 case Level.Freelancer:
                     role = new Freelancer();
                     break;
+                default:
+                    throw new Exception("Неизвестная роль!");
             }
         }
     }
