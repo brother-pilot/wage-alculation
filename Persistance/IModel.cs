@@ -12,10 +12,8 @@ namespace wageсalculation.Persistance
         List<InfoWork> InfoWorksHeader { get;  }
         List<InfoWork> InfoWorksWorker { get;  }
         List<InfoWork> InfoWorksFreelancer { get;  }
-        string PathModel { get; }
-        void ReadFiles();
-        void WriteFiles();
-
+        void RecieveDataFromReadController();
+        void SentDataToReadController();
         void AddHour(InfoWork w);
         void AddUser(User u);
         List<InfoWork> MakeReport(User u, DateTime from, DateTime to);

@@ -15,7 +15,7 @@ namespace wageсalculation.Persistance
             private set 
             {
                 if (value < 0 || value > 24)
-                    throw new Exception("Время работы должно быть от 0 до 24");
+                    throw new ArgumentOutOfRangeException("Время работы должно быть от 0 до 24");
                 time = value; 
             }
         }
@@ -33,15 +33,23 @@ namespace wageсalculation.Persistance
         public InfoWork(string line)
         {
             var items = line.Split(',');
-            if (items.Length != 4||items[0].Length<10)
+            if (items.Length != 4)
                 throw new Exception("Неверный формат данных строки!");
-            this.Data = new DateTime(
-                                     int.Parse(items[0].Substring(0, 3)),
-                                     int.Parse(items[0].Substring(3, 2)),
-                                     int.Parse(items[0].Substring(5, 2))
-                                     );
+            DateTime dt;
+            //this.Data = new DateTime(
+            //                         int.Parse(items[0].Substring(0, 3)),
+            //                         int.Parse(items[0].Substring(3, 2)),
+            //                         int.Parse(items[0].Substring(5, 2))
+            //                         );
+            //this.Data = new DateTime(20231001);
+            if (!DateTime.TryParse(items[0], out dt))
+                throw new Exception("Неверный формат данных строки! неправильная дата"); ;
+            this.Data = dt;
             this.Name = items[1];
-            this.Time = int.Parse(items[2]);
+            int t;
+            if (!int.TryParse(items[2], out t)) 
+                throw new ArgumentOutOfRangeException("Время работы должно быть числом от 0 до 24");
+            this.Time = t;
             this.Work = items[3];
         }
     }

@@ -20,7 +20,7 @@ namespace wageсalculation.Domain
         public Controller(IView v, Model model)
         {
             mod = model;
-            mod.ReadFiles();
+            mod.RecieveDataFromReadController();
             view = v;
             user=Logon();
             InitilizeUserCommand();
@@ -102,7 +102,7 @@ namespace wageсalculation.Domain
             Array levels = Level.GetValues(typeof(Level));
             foreach (var item in levels)
             {
-                Console.WriteLine("(" + (int)item + ") " +mod.ConvertFromLevelToString((Level)item));
+                Console.WriteLine("(" + (int)item + ") " +Model.ConvertFromLevelToString((Level)item));
             }
             int kafn = -1;
             //если введено неправильно но ходим по циклу
@@ -202,7 +202,7 @@ namespace wageсalculation.Domain
         }
         void StopProgram(string message)
         {
-            mod.WriteFiles();
+            mod.SentDataToReadController();
             Console.WriteLine(message);
             Console.WriteLine("Нажмите enter для выхода из программы!");
             Console.ReadLine();
