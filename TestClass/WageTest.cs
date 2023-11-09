@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System;
 using wageсalculation.Persistance;
+using AutoFixture;
 
 namespace TestClass
 {
@@ -21,6 +22,8 @@ namespace TestClass
                 "При работе по часовой оплате оплата часа не может быть 0");
         }
 
+
+
         [TestCase(1, 0, true, false, 1)]
         [TestCase(1, 0, false, false, 1)]
         public void WageForAnyTypeWorkerTest3(decimal monthWage, decimal bonus,
@@ -29,6 +32,22 @@ namespace TestClass
             Assert.Catch(typeof(Exception), () => 
                 new Wage(monthWage, bonus, isMonthWage, isBonus, hourWage),
                 "Работник должен работать или по окладу или по часовой ставке");
+        }
+
+        [Test]
+        [Repeat(25)]
+        public void WageForAnyTypeWorkerWithFixture()
+        {
+            
+                Fixture fixture = new Fixture();
+                decimal monthWage = fixture.Create<decimal>() + 1;
+                decimal bonus = fixture.Create<decimal>();
+                bool isMonthWage = fixture.Create<bool>();
+                bool isBonus = fixture.Create<bool>();
+                decimal hourWage = 1;
+                Assert.Catch(typeof(Exception), () =>
+                    new Wage(monthWage, bonus, isMonthWage, isBonus, hourWage),
+                    "Работник должен работать или по окладу или по часовой ставке");  
         }
 
         [TestCase(1250,1)]

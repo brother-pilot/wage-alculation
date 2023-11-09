@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Moq;
 using NUnit.Framework;
 using wageсalculation.Persistance;
 
@@ -22,6 +23,8 @@ namespace TestClass
         //[Test]
         //public void WriteFiles()
         //{
+        //    MockRepository t = MockRepository(MockBehavior.Default);
+        //    t.
         //    mod.WriteFiles();
         //    Assert.AreEqual(true, File.Exists(mod.PathModel));
         //    mod.DeleteFiles(new DirectoryInfo(mod.PathModel));

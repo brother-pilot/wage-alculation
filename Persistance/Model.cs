@@ -29,12 +29,14 @@ namespace wageсalculation.Persistance
             controllerReader = new ControllerReader();  
         }
 
-        public void RecieveDataFromReadController()
+        public void RecieveDataFromControllerReader()
         {
             (List<User>, List<InfoWork>, List<InfoWork>, List<InfoWork>) result
                  = controllerReader.ReadFiles();
             if (result.Item1 != null)
                 users = result.Item1;
+            else
+                throw new Exception("Пользователей не существует!");
             if (result.Item2 != null)
                 infoWorksHeader = result.Item2;
             if (result.Item3 != null)
@@ -51,7 +53,12 @@ namespace wageсalculation.Persistance
             infoWorksWorker = model.InfoWorksWorker;
             infoWorksFreelancer = model.InfoWorksFreelancer;
         }
-        
+
+        //конструктор для тестирования
+        internal Model(IControllerReader cr)
+        {
+            controllerReader = cr;
+        }
 
         public static string ConvertFromLevelToString(Level level)
         {
@@ -103,9 +110,17 @@ namespace wageсalculation.Persistance
             return works;
         }
 
-        public void SentDataToReadController()
+        public void SentDataToControllerReader()
         {
-            controllerReader.WriteFiles(users, infoWorksHeader,infoWorksWorker, infoWorksFreelancer);
+            try
+            {
+                bool result=controllerReader.WriteFiles(users, infoWorksHeader, infoWorksWorker, infoWorksFreelancer);
+                if (!result) throw new Exception("Не удалось сохранить данные!");
+            }
+            catch
+            {
+               throw new Exception("Не удалось сохранить данные!");
+            }
         }
     }
 }

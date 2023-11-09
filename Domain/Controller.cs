@@ -20,7 +20,7 @@ namespace wageсalculation.Domain
         public Controller(IView v, Model model)
         {
             mod = model;
-            mod.RecieveDataFromReadController();
+            mod.RecieveDataFromControllerReader();
             view = v;
             user=Logon();
             InitilizeUserCommand();
@@ -202,7 +202,7 @@ namespace wageсalculation.Domain
         }
         void StopProgram(string message)
         {
-            mod.SentDataToReadController();
+            mod.SentDataToControllerReader();
             Console.WriteLine(message);
             Console.WriteLine("Нажмите enter для выхода из программы!");
             Console.ReadLine();

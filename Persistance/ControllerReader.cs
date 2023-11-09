@@ -22,6 +22,7 @@ namespace wageсalculation.Persistance
             PathModel = Path.Combine(pathExe, "Data");
         }
 
+        //для тестирования
         internal ControllerReader(IControllerReader controllerReader)
         {
             PathModel = controllerReader.PathModel;
@@ -130,39 +131,48 @@ namespace wageсalculation.Persistance
             return users;
         }
 
-        public void WriteFiles(List<User> users, List<InfoWork> infoWorksHeader,
+        public bool WriteFiles(List<User> users, List<InfoWork> infoWorksHeader,
             List<InfoWork> infoWorksWorker, List<InfoWork> infoWorksFreelancer)
         {
-            var directory = new DirectoryInfo(PathModel);
-
-            // Проверка на существование указанной директории.
-            if (directory.Exists)
+            try
             {
-                Console.WriteLine("Сохраняю файлы...");
-                // Получаем все файлы с расширением .csv.
-                FileInfo[] files = directory.GetFiles("*.csv");
-                // Выводим информацию о каждом файле.
-                foreach (FileInfo file in files)
+                var directory = new DirectoryInfo(PathModel);
+
+                // Проверка на существование указанной директории.
+                if (directory.Exists)
                 {
-                    Console.WriteLine("File name : {0}", file.Name);
-                    if (file.Name == "Users.csv")
-                        ReadFileUser();
-                    else
-                        ReadOtherFile(PathModel, file);
+                    Console.WriteLine("Сохраняю файлы...");
+                    // Получаем все файлы с расширением .csv.
+                    FileInfo[] files = directory.GetFiles("*.csv");
+                    // Выводим информацию о каждом файле.
+                    foreach (FileInfo file in files)
+                    {
+                        Console.WriteLine("File name : {0}", file.Name);
+                        if (file.Name == "Users.csv")
+                            ReadFileUser();
+                        else
+                            ReadOtherFile(PathModel, file);
+                    }
                 }
+                //var fileUser = new FileInfo(PathModel + @"..\..\Users.csv");
+                var fileUser = new FileInfo(Path.Combine(PathModel, "Users.csv"));
+                // FileMode.OpenOrCreate - ЕСЛИ: существует ТО: открыть ИНАЧЕ: создать новый
+                // FileAccess.Read - только для чтения,
+                // FileShare.None - Совместный доступ - Нет.
+                FileStream stream = fileUser.Open(FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
+                StreamWriter streamW = new StreamWriter(stream);
+                users.ForEach(u => streamW.WriteLine(u.name + "," + Model.ConvertFromLevelToString(u.level)));
+                streamW.Close();
+                WriteOthersFiles(infoWorksHeader, "infoWorksHeader.csv");
+                WriteOthersFiles(infoWorksWorker, "infoWorksWorker.csv");
+                WriteOthersFiles(infoWorksFreelancer, "infoWorksFreelancer.csv");
+                return true;
             }
-            //var fileUser = new FileInfo(PathModel + @"..\..\Users.csv");
-            var fileUser = new FileInfo(Path.Combine(PathModel, "Users.csv"));
-            // FileMode.OpenOrCreate - ЕСЛИ: существует ТО: открыть ИНАЧЕ: создать новый
-            // FileAccess.Read - только для чтения,
-            // FileShare.None - Совместный доступ - Нет.
-            FileStream stream = fileUser.Open(FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
-            StreamWriter streamW = new StreamWriter(stream);
-            users.ForEach(u => streamW.WriteLine(u.name + "," + Model.ConvertFromLevelToString(u.level)));
-            streamW.Close();
-            WriteOthersFiles(infoWorksHeader, "infoWorksHeader.csv");
-            WriteOthersFiles(infoWorksWorker, "infoWorksWorker.csv");
-            WriteOthersFiles(infoWorksFreelancer, "infoWorksFreelancer.csv");
+            catch (Exception)
+            {
+                throw new Exception("Не удалось сохранить данные в файл!"); 
+            }
+            
         }
 
         private void DeleteFiles(DirectoryInfo directory)
