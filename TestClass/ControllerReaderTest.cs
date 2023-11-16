@@ -52,13 +52,13 @@ namespace TestClass
             Assert.AreEqual(mod.InfoWorksWorker.Count, result.Item3.Count);
             Assert.AreEqual(mod.InfoWorksFreelancer.Count, result.Item4.Count);
             for (int i = 0; i < mod.Users.Count; i++)
-                Assert.IsTrue(mod.Users[0] == result.Item1[0]);
+                Assert.IsTrue(mod.Users[0].name==result.Item1[0].name);
             for (int i = 0; i < mod.InfoWorksHeader.Count; i++)
-                Assert.IsTrue(mod.InfoWorksHeader[0] == result.Item2[0]);
+                Assert.IsTrue(mod.InfoWorksHeader[0].Work==result.Item2[0].Work);
             for (int i = 0; i < mod.InfoWorksWorker.Count; i++)
-                Assert.IsTrue(mod.InfoWorksWorker[0] == result.Item3[0]);
+                Assert.IsTrue(mod.InfoWorksWorker[0].Work==result.Item3[0].Work);
             for (int i = 0; i < mod.InfoWorksFreelancer.Count; i++)
-                Assert.IsTrue(mod.InfoWorksFreelancer[0] == result.Item3[0]);
+                Assert.IsTrue(mod.InfoWorksFreelancer[0].Work==result.Item3[0].Work);
         }
 
         [Test]

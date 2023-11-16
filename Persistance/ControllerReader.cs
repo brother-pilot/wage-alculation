@@ -13,6 +13,7 @@ namespace wageсalculation.Persistance
     public class ControllerReader: IControllerReader
     {
         public string PathModel { get; }
+        private FileInfo[] files = new FileInfo[4];
         public ControllerReader()
         {
             //инициируем путь для хранения файлов
@@ -20,37 +21,50 @@ namespace wageсalculation.Persistance
             string pathExe = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             Console.WriteLine(pathExe);
             PathModel = Path.Combine(pathExe, "Data");
+            InitializeListFilesForSave();
         }
+
+        
 
         //для тестирования
         internal ControllerReader(IControllerReader controllerReader)
         {
             PathModel = controllerReader.PathModel;
+            InitializeListFilesForSave();
+        }
+
+        private void InitializeListFilesForSave()
+        {
+            string[] filesString = new string[4]
+            {
+            "users.csv",
+            "infoWorksHeader.csv",
+            "infoWorksWorker.csv",
+            "infoWorksFreelancer.csv"
+            };
+            for (int i = 0; i < files.Length; i++)
+            {
+                files[i] = new FileInfo(Path.Combine(PathModel, filesString[i]));
+            }
         }
 
         public (List<User>, List<InfoWork>, List<InfoWork>, List<InfoWork>) ReadFiles()
         {
             var directory = new DirectoryInfo(PathModel);
             List<User> item1=new List<User>();
-            var items=new List<List<InfoWork>>();
+            var items=new List<InfoWork>[3];
             // Проверка на существование указанной директории.
             if (directory.Exists)
             {
                 Console.WriteLine("Ищу файлы... в");
                 Console.WriteLine("Директория с именем: {0}", directory.FullName);
                 // Получаем все файлы с расширением .csv.
-                FileInfo[] files = directory.GetFiles("*.csv");
-                //if ()
+                if (directory.GetFiles("*.csv").Length!=4)
+                    throw new Exception("В директории не все файлы!");
                 // считываем файлы
-                int i = 0;
-                foreach (FileInfo file in files)
-                {
-                    Console.WriteLine("File name : {0}", file.Name);
-                    if (file.Name == "Users.csv")
-                        item1= ReadFileUser();
-                    else
-                        items=ReadOtherFile(PathModel, file);
-                }
+                item1=ReadFileUser();
+                for (int i = 0; i <= 2; i++)
+                    items[i] = ReadOtherFile(files[i+1]);
             }
             else
             {
@@ -61,41 +75,30 @@ namespace wageсalculation.Persistance
 
         }
 
-        private List<List<InfoWork>> ReadOtherFile(string path, FileInfo file)
+        private List<InfoWork> ReadOtherFile(FileInfo file)
         {
-            List<InfoWork> InfoWorksHeader = new List<InfoWork>();
-            List<InfoWork> InfoWorksWorker = new List<InfoWork>();
-            List<InfoWork> InfoWorksFreelancer = new List<InfoWork>();
-            var fileUser = new FileInfo(Path.Combine(path, file.Name));
+            List<InfoWork> result = new List<InfoWork>();
             // FileMode.OpenOrCreate - ЕСЛИ: существует ТО: открыть ИНАЧЕ: создать новый
             // FileAccess.Read - только для чтения,
             // FileShare.None - Совместный доступ - Нет.
-            FileStream stream = fileUser.Open(FileMode.OpenOrCreate, FileAccess.Read, FileShare.None);
+            FileStream stream = file.Open(FileMode.OpenOrCreate, FileAccess.Read, FileShare.None);
             StreamReader streamR = new StreamReader(stream);
             string line;
             while ((line = streamR.ReadLine()) != null)
             {
-
-                if (file.Name == "infoWorksHeader.csv")
-                    InfoWorksHeader.Add(new InfoWork(line));
-                else if (file.Name == "infoWorksWorker.csv")
-                    InfoWorksWorker.Add(new InfoWork(line));
-                else if (file.Name == "infoWorksFreelancer.csv")
-                    InfoWorksFreelancer.Add(new InfoWork(line));
+                result.Add(new InfoWork(line));
             }
             stream.Close();
-            return new List<List<InfoWork>> { InfoWorksHeader, InfoWorksWorker, InfoWorksFreelancer };
+            return result;
         }
 
         List<User> ReadFileUser()
         {
             List<User> users = new List<User>();
-            var fileUser = new FileInfo(Path.Combine(PathModel, "Users.csv"));
-            Console.WriteLine(fileUser.DirectoryName);
             // FileMode.OpenOrCreate - ЕСЛИ: существует ТО: открыть ИНАЧЕ: создать новый
             // FileAccess.Read - только для чтения,
             // FileShare.None - Совместный доступ - Нет.
-            FileStream stream = fileUser.Open(FileMode.Open, FileAccess.Read, FileShare.None);
+            FileStream stream = files[0].Open(FileMode.Open, FileAccess.Read, FileShare.None);
             StreamReader streamR = new StreamReader(stream);
             string line;
             while ((line = streamR.ReadLine()) != null)
@@ -137,36 +140,16 @@ namespace wageсalculation.Persistance
         {
             try
             {
-                var directory = new DirectoryInfo(PathModel);
-
-                // Проверка на существование указанной директории.
-                if (directory.Exists)
-                {
-                    Console.WriteLine("Сохраняю файлы...");
-                    // Получаем все файлы с расширением .csv.
-                    FileInfo[] files = directory.GetFiles("*.csv");
-                    // Выводим информацию о каждом файле.
-                    foreach (FileInfo file in files)
-                    {
-                        Console.WriteLine("File name : {0}", file.Name);
-                        if (file.Name == "Users.csv")
-                            ReadFileUser();
-                        else
-                            ReadOtherFile(PathModel, file);
-                    }
-                }
-                //var fileUser = new FileInfo(PathModel + @"..\..\Users.csv");
-                var fileUser = new FileInfo(Path.Combine(PathModel, "users.csv"));
                 // FileMode.OpenOrCreate - ЕСЛИ: существует ТО: открыть ИНАЧЕ: создать новый
                 // FileAccess.Read - только для чтения,
                 // FileShare.None - Совместный доступ - Нет.
-                FileStream stream = fileUser.Open(FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
+                FileStream stream = files[0].Open(FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
                 StreamWriter streamW = new StreamWriter(stream);
                 users.ForEach(u => streamW.WriteLine(u.name + "," + Model.ConvertFromLevelToString(u.level)));
                 streamW.Close();
-                WriteOthersFiles(infoWorksHeader, "infoWorksHeader.csv");
-                WriteOthersFiles(infoWorksWorker, "infoWorksWorker.csv");
-                WriteOthersFiles(infoWorksFreelancer, "infoWorksFreelancer.csv");
+                WriteOthersFiles(infoWorksHeader, files[1]);
+                WriteOthersFiles(infoWorksWorker, files[2]);
+                WriteOthersFiles(infoWorksFreelancer, files[3]);
                 return true;
             }
             catch (Exception)
@@ -188,14 +171,12 @@ namespace wageсalculation.Persistance
             catch (Exception e) { Console.WriteLine(e.Message); }
         }
 
-        private void WriteOthersFiles(List<InfoWork> list, string filename)
-        {
-            //var fileUser = new FileInfo(PathModel + @"..\..\"+ filename);
-            var fileUser = new FileInfo(Path.Combine(PathModel, filename));
+        private void WriteOthersFiles(List<InfoWork> list, FileInfo filename)
+        {          
             // FileMode.OpenOrCreate - ЕСЛИ: существует ТО: открыть ИНАЧЕ: создать новый
             // FileAccess.Read - только для чтения,
             // FileShare.None - Совместный доступ - Нет.
-            FileStream stream = fileUser.Open(FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
+            FileStream stream = filename.Open(FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
             StreamWriter streamW = new StreamWriter(stream);
             list.ForEach(x => streamW.WriteLine(x.Data + "," + x.Name + "," + x.Time + "," + x.Work));
             streamW.Close();
