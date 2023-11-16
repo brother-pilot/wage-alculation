@@ -40,23 +40,7 @@ namespace TestClass
              new InfoWork(DateTime.Today, "FTest", 12, "Work3"),
             };
 
-        //public string PathModel 
-        //{
-        //    get //==>@"C:\\Test\\Test.txt";
-        //    {
-        //        string pathExe = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        //        var pathDirectory= Path.Combine(pathExe, "TestData");
-        //        var directory = new DirectoryInfo(pathDirectory);
-        //        // Создание в TESTDIR новых подкаталогов.
-        //        if (!directory.Exists)
-        //        {
-        //            var subDirectory = new DirectoryInfo(pathExe);
-        //            // Создаем директорию
-        //            subDirectory.CreateSubdirectory("TestData");
-        //        }
-        //        return pathDirectory;
-        //    }
-        //}
+        
 
     public void AddHour(InfoWork w)
         {

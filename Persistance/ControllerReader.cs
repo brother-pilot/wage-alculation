@@ -55,6 +55,7 @@ namespace wageсalculation.Persistance
             else
             {
                 Console.WriteLine("Директория с именем: {0}  не существует.", directory.FullName);
+                throw new Exception("Директория отсутсвует!");
             }
             return (item1, items[0], items[1], items[2]);
 
@@ -155,7 +156,7 @@ namespace wageсalculation.Persistance
                     }
                 }
                 //var fileUser = new FileInfo(PathModel + @"..\..\Users.csv");
-                var fileUser = new FileInfo(Path.Combine(PathModel, "Users.csv"));
+                var fileUser = new FileInfo(Path.Combine(PathModel, "users.csv"));
                 // FileMode.OpenOrCreate - ЕСЛИ: существует ТО: открыть ИНАЧЕ: создать новый
                 // FileAccess.Read - только для чтения,
                 // FileShare.None - Совместный доступ - Нет.
@@ -175,8 +176,9 @@ namespace wageсalculation.Persistance
             
         }
 
-        private void DeleteFiles(DirectoryInfo directory)
+        internal void DeleteDirectory()
         {
+            var directory = new DirectoryInfo(PathModel);
             try
             {
                 //будут ли удалены также и все вложенные подкаталоги
