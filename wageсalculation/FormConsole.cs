@@ -6,25 +6,18 @@ using System.Linq;
 
 namespace wageсalculation
 {
-    internal class FormConsole:IView
+    /// <summary>
+    /// Presenter
+    /// </summary>
+    partial class FormConsole:IView
     {
         Controller c;
-        string labelStatus;
 
         public FormConsole(Model mod)
         {
             this.c = new Controller(this, mod);
         }
 
-        public string Status 
-        { get => labelStatus; set => this.labelStatus = value; }
-
-        public void ShowDo(Dictionary<int, string> commandAccessKey)
-        {
-            Console.WriteLine("Выберите желаемое действие (введите номер)");
-            foreach (var item in commandAccessKey)
-                Console.WriteLine("(" + item.Key + ") " + item.Value);
-        }
 
         public void PrintReport(DateTime from,DateTime to, List<InfoWork> res,int time,decimal wage)
         {

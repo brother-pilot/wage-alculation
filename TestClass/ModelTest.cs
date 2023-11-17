@@ -84,6 +84,27 @@ namespace TestClass
         }
 
         [Test]
+        public void RecieveDataWithUknownUserInfoworksFromControllerReaderTest1()
+        {
+            var ControllerReaderMock = new Mock<IControllerReader>();
+            Model model = new Model(ControllerReaderMock.Object);
+            ControllerReaderMock.Setup((cr) => cr.ReadFiles())
+                .Returns
+                (
+                   (
+                    new List<User> { new User("HTest", Level.Head) },
+                    new List<InfoWork> { new InfoWork(DateTime.Now, "UnKnownUser", 1, "Work") },
+                    model.InfoWorksWorker,
+                    model.InfoWorksFreelancer
+                    )
+                );
+            TestDelegate result = () => model.RecieveDataFromControllerReader();
+            Assert.Catch(typeof(Exception),result);
+            var ex = Assert.Throws<Exception>(result);
+            Assert.AreEqual("В файлах работ есть неизвестные пользователи!", ex.Message);
+        }
+
+        [Test]
         [Category("Unit")]
         public void DoNotSentDataToControllerReaderTest1()
         {

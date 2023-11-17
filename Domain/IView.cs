@@ -9,11 +9,14 @@ namespace wageсalculation.Domain
 {
     public interface IView
     {
+        void ShowMessage(string message);
+        void ShowDo(Dictionary<int, string> commandAccessKey);
 
-        //строка состояния
-        string Status { get; set; }
+        string ReadNotEmptyLine(string title);
+        int ReadIntLine(string title);
+        void WriteErrorMessage(string message);
 
-        public void ShowDo(Dictionary<int, string> commandAccessKey) { }
+        DateTime ReadNotEmptyDateTime(string title);
 
         void PrintReport(DateTime from, DateTime to,List<InfoWork> res, int time, decimal wage);
         void PrintFullReport(DateTime from, DateTime to, List<(List<InfoWork>, int, decimal)> res);

@@ -15,7 +15,6 @@ namespace wageсalculation
         static void Main(string[] args)
         {
             var mod = new Model();
-            //var c=new Controller(mod)
             var form = new FormConsole(mod);
             //Application.Run(form);
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using wageсalculation.Persistance;
 using System.Linq;
+using wageсalculation;
 
 namespace wageсalculation.Domain
 {
@@ -22,12 +23,12 @@ namespace wageсalculation.Domain
             mod = model;
             mod.RecieveDataFromControllerReader();
             view = v;
-            user=Logon();
+            user = Logon();
             InitilizeUserCommand();
             while (true)
             {
                 view.ShowDo(commandAccessKey);
-                var key = ReadAction();
+                var key = ReadCommand();
                 DoCommand(key);
             }
         }
@@ -40,34 +41,46 @@ namespace wageсalculation.Domain
 
         private string InputName()
         {
-            view.Status = "Пожалуйста, введите имя:";
-            Console.WriteLine("Пожалуйста, введите имя:");
-            string name = Console.ReadLine();
+            string name=view.ReadNotEmptyLine("Введите имя пользователя программы");
             while (!mod.Users.Exists(u => u.name == name))
             {
-                Console.WriteLine("Ошибка! Введено неизвестное имя");
-                name = Console.ReadLine();
+                view.WriteErrorMessage("Ошибка! Введено неизвестное имя");
+                name = view.ReadNotEmptyLine("Введите имя пользователя программы");
             }
             return name;
         }
 
-        Command ReadAction()
+        
+        Command ReadCommand()
         {
             int kafn = -1;
-            //если введено неправильно но ходим по циклу
-            while (!Int32.TryParse(Console.ReadLine(), out kafn) || !commandAccessKey.ContainsKey(kafn))
-                Console.WriteLine("Неправильная команда. Введите номер еще раз");
+            //если введено неправильно то ходим по циклу
+            while (!Int32.TryParse(view.ReadNotEmptyLine("Введите команду"), out kafn) || 
+                !commandAccessKey.ContainsKey(kafn))
+                view.WriteErrorMessage("Неправильная команда. Введите номер еще раз");
             return (Command)kafn-1;
-            //ttt("sdf");
-            //Console.WriteLine(commandAccessKey[kafn]);
         }
+
+        //как еще можно было сделать команды, но у меня разные доступные команды у разных пользоывателй
+        ////Command ReadCommand()
+        //{
+        //    while (true)
+        //    {
+        //        var input = view.ReadIntLine("");
+        //        if (Enum.TryParse(input, true, out Command command))
+        //        {
+        //            return command;
+        //        }
+
+        //        view.WriteErrorMessage("Не известная команда. Введите номер еще раз");
+        //    }
+        //}
 
         private void DoCommand(Command key)
         {
             switch (key)
             {
                 case Command.Exit:
-                    //action("Завершение работы программы...");
                     StopProgram("Завершение работы программы...");
                     break;
                 case Command.AddHour:
@@ -91,22 +104,22 @@ namespace wageсalculation.Domain
 
         public void PrepareAddUser()
         {
-            Console.WriteLine("Пожалуйста, введите имя нового пользователя с заглавной буквы:");
-            string name = Console.ReadLine();
+            string name = view.ReadNotEmptyLine("Введите имя нового пользователя с заглавной буквы");
             while (mod.Users.Exists(u => u.name == name))
             {
-                Console.WriteLine("Ошибка! Введено занятое имя");
-                name = Console.ReadLine();
+                view.WriteErrorMessage("Ошибка! Введено занятое имя");
+                name = view.ReadNotEmptyLine("имя нового пользователя с заглавной буквы");
             }
-            Console.WriteLine("Выберите роль пользователя(введите номер):");
+            view.ShowMessage("Выберите роль пользователя(введите номер)");
             Array levels = Level.GetValues(typeof(Level));
             foreach (var item in levels)
             {
-                Console.WriteLine("(" + (int)item + ") " +Model.ConvertFromLevelToString((Level)item));
+                view.ShowMessage("(" + (int)item + ") " +Model.ConvertFromLevelToString((Level)item));
             }
             int kafn = -1;
             //если введено неправильно но ходим по циклу
-            while (!Int32.TryParse(Console.ReadLine(), out kafn) || kafn<0||kafn>levels.Length-1)
+            while (!Int32.TryParse(view.ReadNotEmptyLine(" "), out kafn) ||
+                kafn < 0 || kafn > levels.Length)
                 Console.WriteLine("Неправильная команда. Введите номер еще раз");
             mod.AddUser(new User(name, (Level)kafn));
         }
@@ -119,9 +132,9 @@ namespace wageсalculation.Domain
 
         public void PrepareReportAllUsers()
         {
-            DateTime[] dates = InputDates();
-            var from = dates[0];
-            var to = dates[1];
+            //DateTime[] dates = InputDates();
+            var from = view.ReadNotEmptyDateTime("Введите дату начала отчета в формате ГГГГ.ММ.ДД");
+            var to = view.ReadNotEmptyDateTime("Введите дату конца отчета в формате ГГГГ.ММ.ДД");
             List<(List<InfoWork>,int,decimal)> res = new List<(List<InfoWork>, int, decimal)>();
             foreach (var user in mod.Users)
             {
@@ -135,59 +148,47 @@ namespace wageсalculation.Domain
 
         public void PrepareReport(User user)
         {
-            DateTime[] dates=InputDates();
-            var from = dates[0];
-            var to = dates[1];
+            //DateTime[] dates=InputDates();
+            var from = view.ReadNotEmptyDateTime("Введите дату начала отчета в формате ГГГГ.ММ.ДД");
+            var to = view.ReadNotEmptyDateTime("Введите дату конца отчета в формате ГГГГ.ММ.ДД");
             var res=mod.MakeReport(user,from,to);
             int time = res.Sum(i => i.Time);
             decimal wage=user.role.wage.PayWage(time);       
             view.PrintReport(from,to,res,time,wage);
         }
 
-        private DateTime[] InputDates()
-        {
-            DateTime[] dates = new DateTime[2];
-            Console.WriteLine("Введите дату начала отчета в формате ГГГГ.ММ.ДД:");
-            dates[0] = InputDate();
-            Console.WriteLine("Введите дату конца отчета в формате ГГГГ.ММ.ДД:");
-            dates[1] = InputDate();
-            return dates;
-        }
+        //private DateTime[] InputDates()
+        //{
+        //    DateTime[] dates = new DateTime[2];
+        //    Console.WriteLine("Введите дату начала отчета в формате ГГГГ.ММ.ДД:");
+        //    dates[0] = InputDate();
+        //    Console.WriteLine("Введите дату конца отчета в формате ГГГГ.ММ.ДД:");
+        //    dates[1] = InputDate();
+        //    return dates;
+        //}
 
-        private DateTime InputDate()
-        {
-            DateTime date;
-            while (!DateTime.TryParse(Console.ReadLine(), out date))
-                Console.WriteLine("Неправильная команда. Введите номер еще раз");
-            return date;
-        }
+        
 
         public void PrepareAddHour()
         {
-            Console.WriteLine("Добавляем часы работы. Введите дату работы в формате ГГГГ.ММ.ДД");
-            DateTime dt;
-            while (!DateTime.TryParse(Console.ReadLine(), out dt))
-                Console.WriteLine("Неправильная команда. Введите номер еще раз");
+            DateTime dt=view.ReadNotEmptyDateTime("Добавляем часы работы. Введите дату работы в формате ГГГГ.ММ.ДД");
             string name;
             if (user.role.GetType() == typeof(Header))
             {
-                Console.WriteLine("Введите имя пользователя");
-                name = Console.ReadLine();
+                name=view.ReadNotEmptyLine("Введите имя пользователя");
                 while (!mod.Users.Exists(u => u.name == name))
                 {
-                    Console.WriteLine("Ошибка! Введено неизвестное имя");
-                    name = Console.ReadLine();
+                    view.WriteErrorMessage("Ошибка! Введено неизвестное имя");
+                    name = view.ReadNotEmptyLine("Введите имя пользователя");
                 }
             }
             else
                 name = user.name;
-            Console.WriteLine("Введите количество отработанных часов");
             int hours = -1;
             //если введено неправильно но ходим по циклу
-            while (!Int32.TryParse(Console.ReadLine(), out hours) || hours < 1 || hours > 24)
-                Console.WriteLine("Количество часов должно быть целым числом от 1 до 24");
-            Console.WriteLine("Введение описание работы");
-            string work = Console.ReadLine();
+            while (!Int32.TryParse(view.ReadNotEmptyLine("Введите количество отработанных часов"), out hours) || hours < 1 || hours > 24)
+                view.WriteErrorMessage("Количество часов должно быть целым числом от 1 до 24");
+            string work = view.ReadNotEmptyLine("Введение описание работы");
             mod.AddHour(new InfoWork(dt, name, hours, work));
         }
 
@@ -203,9 +204,7 @@ namespace wageсalculation.Domain
         void StopProgram(string message)
         {
             mod.SentDataToControllerReader();
-            Console.WriteLine(message);
-            Console.WriteLine("Нажмите enter для выхода из программы!");
-            Console.ReadLine();
+            view.ShowMessage(message);
             Environment.Exit(0);
         }
 
