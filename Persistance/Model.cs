@@ -85,17 +85,17 @@ namespace wageсalculation.Persistance
 
         public void AddHour(InfoWork w)
         {
-            if (Users.Find(u => u.name == w.Name).level==Level.Head)
+            if (Users.Find(u => u.Name == w.Name).Level==Level.Head)
                 infoWorksHeader.Add(w);
-            else if (Users.Find(u => u.name == w.Name).level == Level.Worker)
+            else if (Users.Find(u => u.Name == w.Name).Level == Level.Worker)
                 infoWorksWorker.Add(w);
-            else if (Users.Find(u => u.name == w.Name).level == Level.Freelancer)        
+            else if (Users.Find(u => u.Name == w.Name).Level == Level.Freelancer)        
                 infoWorksFreelancer.Add(w);
         }
 
         public void AddUser(User u)
         {
-            while (Users.Exists(user => user.name == u.name))
+            while (Users.Exists(user => user.Name == u.Name))
             {
                 throw new Exception("Такой пользователь уже есть!");
             }
@@ -105,11 +105,11 @@ namespace wageсalculation.Persistance
         public List<InfoWork> MakeReport(User u,DateTime from, DateTime to)
         {
             List<InfoWork> works=new List<InfoWork>();
-            if (Users.Find(user => user == u).level == Level.Head)
+            if (Users.Find(user => user == u).Level == Level.Head)
                 works = infoWorksHeader.Where(w=>w.Data>=from&& w.Data<=to).ToList();
-            else if (Users.Find(user => user == u).level == Level.Worker)
+            else if (Users.Find(user => user == u).Level == Level.Worker)
                 works = infoWorksWorker.Where(w => w.Data >= from && w.Data <= to).ToList();
-            else if (Users.Find(user => user == u).level == Level.Freelancer)
+            else if (Users.Find(user => user == u).Level == Level.Freelancer)
                 works = infoWorksFreelancer.Where(w => w.Data >= from && w.Data <= to).ToList();
             return works;
         }

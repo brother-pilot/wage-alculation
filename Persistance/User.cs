@@ -4,9 +4,13 @@ namespace wageсalculation.Persistance
 {
    public class User
     {
-        public string name;
-        public Level level;
-        public Role role;
+        string name;
+        Level level;
+        Role role;
+
+        public string Name { get { return name; } }
+        public Level Level { get { return level; } }
+        public Role Role { get { return role; } }
 
         public User(string name, Level level)
         {

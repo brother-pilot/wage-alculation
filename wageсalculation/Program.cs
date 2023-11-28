@@ -23,22 +23,6 @@ namespace wageсalculation
 
        
 
-
-        //private void CastToRole()
-        //{
-        //    switch (user.level)
-        //    { 
-        //        case Level.Head:
-        //            userType=user.role as Header;
-        //            break;
-        //        case Level.Worker:
-        //            userType = user.role as Worker;
-        //            break;
-        //        case Level.Freelancer:
-        //            userType = user.role as Freelancer;
-        //            break;
-        //    }
-        //}
   
     }
 }

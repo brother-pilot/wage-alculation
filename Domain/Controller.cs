@@ -36,13 +36,13 @@ namespace wageсalculation.Domain
         public User Logon()
         {
             string name = InputName();
-            return mod.Users.Find(u => u.name == name);
+            return mod.Users.Find(u => u.Name == name);
         }
 
         private string InputName()
         {
             string name=view.ReadNotEmptyLine("Введите имя пользователя программы");
-            while (!mod.Users.Exists(u => u.name == name))
+            while (!mod.Users.Exists(u => u.Name == name))
             {
                 view.WriteErrorMessage("Ошибка! Введено неизвестное имя");
                 name = view.ReadNotEmptyLine("Введите имя пользователя программы");
@@ -105,7 +105,7 @@ namespace wageсalculation.Domain
         public void PrepareAddUser()
         {
             string name = view.ReadNotEmptyLine("Введите имя нового пользователя с заглавной буквы");
-            while (mod.Users.Exists(u => u.name == name))
+            while (mod.Users.Exists(u => u.Name == name))
             {
                 view.WriteErrorMessage("Ошибка! Введено занятое имя");
                 name = view.ReadNotEmptyLine("имя нового пользователя с заглавной буквы");
@@ -140,7 +140,7 @@ namespace wageсalculation.Domain
             {
                 var item = mod.MakeReport(user, from, to);
                 int time = item.Sum(i => i.Time);
-                decimal wage = user.role.wage.PayWage(time);
+                decimal wage = user.Role.wage.PayWage(time);
                 res.Add((item, time, wage));
             }
             view.PrintFullReport(from, to, res);
@@ -153,7 +153,7 @@ namespace wageсalculation.Domain
             var to = view.ReadNotEmptyDateTime("Введите дату конца отчета в формате ГГГГ.ММ.ДД");
             var res=mod.MakeReport(user,from,to);
             int time = res.Sum(i => i.Time);
-            decimal wage=user.role.wage.PayWage(time);       
+            decimal wage=user.Role.wage.PayWage(time);       
             view.PrintReport(from,to,res,time,wage);
         }
 
@@ -173,17 +173,17 @@ namespace wageсalculation.Domain
         {
             DateTime dt=view.ReadNotEmptyDateTime("Добавляем часы работы. Введите дату работы в формате ГГГГ.ММ.ДД");
             string name;
-            if (user.role.GetType() == typeof(Header))
+            if (user.Role.GetType() == typeof(Header))
             {
                 name=view.ReadNotEmptyLine("Введите имя пользователя");
-                while (!mod.Users.Exists(u => u.name == name))
+                while (!mod.Users.Exists(u => u.Name == name))
                 {
                     view.WriteErrorMessage("Ошибка! Введено неизвестное имя");
                     name = view.ReadNotEmptyLine("Введите имя пользователя");
                 }
             }
             else
-                name = user.name;
+                name = user.Name;
             int hours = -1;
             //если введено неправильно но ходим по циклу
             while (!Int32.TryParse(view.ReadNotEmptyLine("Введите количество отработанных часов"), out hours) || hours < 1 || hours > 24)
@@ -198,8 +198,8 @@ namespace wageсalculation.Domain
         {
             //command["Exit"] = (s) => StopProgram(s as string);
             int i = 0;
-            foreach (var item in user.role.Commands)
-                commandAccessKey[item.Key] = user.role.mesRole[item.Value] ;
+            foreach (var item in user.Role.Commands)
+                commandAccessKey[item.Key] = user.Role.mesRole[item.Value] ;
         }
         void StopProgram(string message)
         {

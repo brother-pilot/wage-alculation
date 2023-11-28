@@ -145,7 +145,7 @@ namespace wageсalculation.Persistance
                 // FileShare.None - Совместный доступ - Нет.
                 FileStream stream = files[0].Open(FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
                 StreamWriter streamW = new StreamWriter(stream);
-                users.ForEach(u => streamW.WriteLine(u.name + "," + Model.ConvertFromLevelToString(u.level)));
+                users.ForEach(u => streamW.WriteLine(u.Name + "," + Model.ConvertFromLevelToString(u.Level)));
                 streamW.Close();
                 WriteOthersFiles(infoWorksHeader, files[1]);
                 WriteOthersFiles(infoWorksWorker, files[2]);
