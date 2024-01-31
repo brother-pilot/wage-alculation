@@ -71,7 +71,7 @@ namespace TestClass
         //[Ignore("TO DO")]
         public void RecieveDataWithEmptyUserListFromControllerReaderTest1()
         {
-            var ControllerReaderMock = new Mock<IControllerReader>();
+            var ControllerReaderMock = new Mock<IControllerData>();
             Model model = new Model(ControllerReaderMock.Object);
             TestDelegate result = () => model.RecieveDataFromControllerReader();
             Assert.Catch(
@@ -86,9 +86,9 @@ namespace TestClass
         [Test]
         public void RecieveDataWithUknownUserInfoworksFromControllerReaderTest1()
         {
-            var ControllerReaderMock = new Mock<IControllerReader>();
+            var ControllerReaderMock = new Mock<IControllerData>();
             Model model = new Model(ControllerReaderMock.Object);
-            ControllerReaderMock.Setup((cr) => cr.ReadFiles())
+            ControllerReaderMock.Setup((cr) => cr.ReadData())
                 .Returns
                 (
                    (
@@ -108,7 +108,7 @@ namespace TestClass
         [Category("Unit")]
         public void DoNotSentDataToControllerReaderTest1()
         {
-            var ControllerReaderMock = new Mock<IControllerReader>();
+            var ControllerReaderMock = new Mock<IControllerData>();
             //ControllerReaderMock.
             //создаем модель с заглушкой. В модели поля будут пустыми т.к. конструктор
             //у нас ничего не задает. вместо связи с классом для сохранения данных
@@ -118,7 +118,7 @@ namespace TestClass
             //если метод возщает void то ответ null
             Model model = new Model(ControllerReaderMock.Object);
             //задаем что нам должен ответить метод WriteFiles из мока
-            ControllerReaderMock.Setup((cr) => cr.WriteFiles(model.Users, model.InfoWorksHeader,
+            ControllerReaderMock.Setup((cr) => cr.WriteData(model.Users, model.InfoWorksHeader,
                 model.InfoWorksWorker, model.InfoWorksFreelancer)).
                 Throws(new Exception("Не удалось сохранить данные в файл!"));
             TestDelegate result = () => model.SentDataToControllerReader();

@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 [assembly: InternalsVisibleTo("TestClass")]
 namespace wageсalculation.Persistance
 {
-    public class ControllerReader: IControllerReader
+    public class ControllerReaderFromFile: IControllerData
     {
         public string PathModel { get; }
         private FileInfo[] files = new FileInfo[4];
-        public ControllerReader()
+        public ControllerReaderFromFile()
         {
             //инициируем путь для хранения файлов
             //узнаем путь к текущей папке проекта
@@ -27,9 +27,9 @@ namespace wageсalculation.Persistance
         
 
         //для тестирования
-        internal ControllerReader(IControllerReader controllerReader)
+        internal ControllerReaderFromFile(IControllerData controllerReader, string pathModel)
         {
-            PathModel = controllerReader.PathModel;
+            PathModel = pathModel;
             InitializeListFilesForSave();
         }
 
@@ -48,7 +48,7 @@ namespace wageсalculation.Persistance
             }
         }
 
-        public (List<User>, List<InfoWork>, List<InfoWork>, List<InfoWork>) ReadFiles()
+        public (List<User>, List<InfoWork>, List<InfoWork>, List<InfoWork>) ReadData()
         {
             var directory = new DirectoryInfo(PathModel);
             List<User> item1=new List<User>();
@@ -135,7 +135,7 @@ namespace wageсalculation.Persistance
             return users;
         }
 
-        public bool WriteFiles(List<User> users, List<InfoWork> infoWorksHeader,
+        public bool WriteData(List<User> users, List<InfoWork> infoWorksHeader,
             List<InfoWork> infoWorksWorker, List<InfoWork> infoWorksFreelancer)
         {
             try

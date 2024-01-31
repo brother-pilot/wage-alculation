@@ -13,7 +13,7 @@ namespace TestClass
     [TestFixture]
     class ControllerReaderTest
     {
-        ControllerReader cr;
+        ControllerReaderFromFile cr;
         IModel mod;
         string fileUser;
         string fileInfoWorksHeader;
@@ -23,7 +23,8 @@ namespace TestClass
         [OneTimeSetUp]
         public void Init()
         {
-            cr = new ControllerReader(new StubControllerReader());
+            var scr = new StubControllerReader();
+            cr = new ControllerReaderFromFile(scr,scr.PathModel);
             mod = new StubModel();
             fileUser = Path.Combine(cr.PathModel, "users.csv");
             fileInfoWorksHeader = Path.Combine(cr.PathModel, "infoWorksHeader.csv");
@@ -35,7 +36,7 @@ namespace TestClass
         [Category("Itegration")]
         public void Step1CheckFilesExistsAfterSaveTest()
         {
-            cr.WriteFiles(mod.Users, mod.InfoWorksHeader, mod.InfoWorksWorker, mod.InfoWorksFreelancer);
+            cr.WriteData(mod.Users, mod.InfoWorksHeader, mod.InfoWorksWorker, mod.InfoWorksFreelancer);
             Assert.AreEqual(true, File.Exists(fileUser));
             Assert.AreEqual(true, File.Exists(fileInfoWorksHeader));
             Assert.AreEqual(true, File.Exists(fileInfoWorksWorker));
@@ -46,13 +47,13 @@ namespace TestClass
         [Category("Itegration")]
         public void Step2CheckReadingFilesAfterSaveTest()
         {
-            (List<User>, List<InfoWork>, List<InfoWork>, List<InfoWork>) result = cr.ReadFiles();
+            (List<User>, List<InfoWork>, List<InfoWork>, List<InfoWork>) result = cr.ReadData();
             Assert.AreEqual(mod.Users.Count, result.Item1.Count);
             Assert.AreEqual(mod.InfoWorksHeader.Count, result.Item2.Count);
             Assert.AreEqual(mod.InfoWorksWorker.Count, result.Item3.Count);
             Assert.AreEqual(mod.InfoWorksFreelancer.Count, result.Item4.Count);
             for (int i = 0; i < mod.Users.Count; i++)
-                Assert.IsTrue(mod.Users[0].name==result.Item1[0].name);
+                Assert.IsTrue(mod.Users[0].Name==result.Item1[0].Name);
             for (int i = 0; i < mod.InfoWorksHeader.Count; i++)
                 Assert.IsTrue(mod.InfoWorksHeader[0].Work==result.Item2[0].Work);
             for (int i = 0; i < mod.InfoWorksWorker.Count; i++)

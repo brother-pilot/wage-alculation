@@ -10,7 +10,7 @@ namespace wageсalculation.Persistance
 {
     public class Model:IModel
     {
-        IControllerReader controllerReader;
+        IControllerData controllerData;
         /// <summary>
         /// Class for safe data
         /// </summary>
@@ -26,13 +26,13 @@ namespace wageсalculation.Persistance
 
         public Model()
         {
-            controllerReader = new ControllerReader();  
+            controllerData = new ControllerReaderFromFile();  
         }
 
         public void RecieveDataFromControllerReader()
         {
             (List<User>, List<InfoWork>, List<InfoWork>, List<InfoWork>) result
-                 = controllerReader.ReadFiles();
+                 = controllerData.ReadData();
             if (result.Item1 != null)
                 users = result.Item1;
             else
@@ -59,9 +59,9 @@ namespace wageсalculation.Persistance
         }
 
         //конструктор для тестирования
-        internal Model(IControllerReader cr)
+        internal Model(IControllerData cr)
         {
-            controllerReader = cr;
+            controllerData = cr;
         }
 
         public static string ConvertFromLevelToString(Level level)
@@ -118,7 +118,7 @@ namespace wageсalculation.Persistance
         {
             try
             {
-                bool result=controllerReader.WriteFiles(users, infoWorksHeader, infoWorksWorker, infoWorksFreelancer);
+                bool result= controllerData.WriteData(users, infoWorksHeader, infoWorksWorker, infoWorksFreelancer);
                 if (!result) throw new Exception("Не удалось сохранить данные!");
             }
             catch

@@ -9,7 +9,7 @@ using wageсalculation.Persistance;
 
 namespace TestClass
 {
-    class StubControllerReader : IControllerReader
+    class StubControllerReader : IControllerData
     {
 
 
@@ -31,12 +31,12 @@ namespace TestClass
             pathModel = pathDirectory;
         }
 
-        public (List<User>, List<InfoWork>, List<InfoWork>, List<InfoWork>) ReadFiles()
+        public (List<User>, List<InfoWork>, List<InfoWork>, List<InfoWork>) ReadData()
         {
             throw new NotImplementedException();
         }
 
-        public bool WriteFiles(List<User> users, List<InfoWork> infoWorksHeader, List<InfoWork> infoWorksWorker, List<InfoWork> infoWorksFreelancer)
+        public bool WriteData(List<User> users, List<InfoWork> infoWorksHeader, List<InfoWork> infoWorksWorker, List<InfoWork> infoWorksFreelancer)
         {
             throw new NotImplementedException();
         }

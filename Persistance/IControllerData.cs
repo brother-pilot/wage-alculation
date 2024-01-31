@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace wageсalculation.Persistance
 {
-    public interface IControllerReader
+    public interface IControllerData
     {
-        string PathModel { get; }
-        (List<User>, List<InfoWork>, List<InfoWork>, List<InfoWork>) ReadFiles();
-        bool WriteFiles(List<User> users, List<InfoWork> infoWorksHeader, 
+        (List<User>, List<InfoWork>, List<InfoWork>, List<InfoWork>) ReadData();
+        bool WriteData(List<User> users, List<InfoWork> infoWorksHeader, 
             List<InfoWork> infoWorksWorker, List<InfoWork> infoWorksFreelancer);
     }
 }
