@@ -89,15 +89,13 @@ namespace TestClass
         {
             var ControllerDataMock = new Mock<IControllerData>();
             Model model = new Model(ControllerDataMock.Object);
-            ControllerDataMock.Setup((cr) => cr.ReadData())
+            ControllerDataMock.Setup((cr) => cr.ReadData<User>())
+                .Returns(new List<User> { new User("HTest", Level.Head) });
+            ControllerDataMock.Setup((cr) => cr.ReadData<InfoWork>())
                 .Returns
-                (
-                   (
-                    new List<User> { new User("HTest", Level.Head) },
-                    new List<InfoWork> { new InfoWork(DateTime.Now, "UnKnownUser", 1, "Work") },
-                    model.InfoWorksWorker,
-                    model.InfoWorksFreelancer
-                    )
+                (new List<InfoWork> { new InfoWork(DateTime.Now, "UnKnownUser", 1, "Work") }//,
+                    //model.InfoWorksWorker,
+                   // model.InfoWorksFreelancer
                 );
             TestDelegate result = () => model.RecieveDataFromControllerData();
             Assert.Catch(typeof(Exception),result);
@@ -119,8 +117,7 @@ namespace TestClass
             //если метод возщает void то ответ null
             Model model = new Model(ControllerReaderMock.Object);
             //задаем что нам должен ответить метод WriteFiles из мока
-            ControllerReaderMock.Setup((cr) => cr.WriteData(model.Users, model.InfoWorksHeader,
-                model.InfoWorksWorker, model.InfoWorksFreelancer)).
+            ControllerReaderMock.Setup((cr) => cr.WriteData<User>(model.Users)).
                 Throws(new Exception("Не удалось сохранить данные в файл!"));
             TestDelegate result = () => model.SentDataToControllerData();
             //внимание!!! проверяет только тип исключения!!!

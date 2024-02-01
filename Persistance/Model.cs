@@ -31,12 +31,12 @@ namespace wageсalculation.Persistance
 
         public void RecieveDataFromControllerData()
         {
-            (List<User>, List<InfoWork>, List<InfoWork>, List<InfoWork>) result
-                 = controllerData.ReadData();
-            if (result.Item1 != null)
-                users = result.Item1;
+            List<User> result  = controllerData.ReadData<User>();
+            if (result != null)
+                users = result;
             else
                 throw new Exception("Пользователей не существует!");
+            List <InfoWork> 
             if (result.Item2.Exists(i => Users.Exists(u => u.Name != i.Name)) ||
                 result.Item3.Exists(i => Users.Exists(u => u.Name != i.Name)) ||
                 result.Item4.Exists(i => Users.Exists(u => u.Name != i.Name)))

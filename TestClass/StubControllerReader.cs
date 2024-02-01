@@ -31,12 +31,12 @@ namespace TestClass
             pathModel = pathDirectory;
         }
 
-        public (List<User>, List<InfoWork>, List<InfoWork>, List<InfoWork>) ReadData()
+        public List<T> ReadData<T>() where T : class
         {
             throw new NotImplementedException();
         }
 
-        public bool WriteData(List<User> users, List<InfoWork> infoWorksHeader, List<InfoWork> infoWorksWorker, List<InfoWork> infoWorksFreelancer)
+        public bool WriteData<T>(List<T> item) where T : class
         {
             throw new NotImplementedException();
         }
