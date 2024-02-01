@@ -15,14 +15,9 @@ namespace wageсalculation.Persistance
         /// Class for safe data
         /// </summary>
         List<User> users = new List<User>();
-        List<InfoWork> infoWorksHeader = new List<InfoWork>();
-        List<InfoWork> infoWorksWorker = new List<InfoWork>();
-        List<InfoWork> infoWorksFreelancer = new List<InfoWork>();
+        List<InfoWork> infoWorks = new List<InfoWork>();
         public List<User> Users { get { return users; } } 
-        public List<InfoWork> InfoWorksHeader { get { return infoWorksHeader; } }
-
-        public List<InfoWork> InfoWorksWorker { get { return infoWorksWorker; } } 
-        public List<InfoWork> InfoWorksFreelancer { get { return infoWorksFreelancer; } } 
+        public List<InfoWork> InfoWorks { get { return infoWorks; } } 
 
         public Model()
         {
@@ -36,26 +31,26 @@ namespace wageсalculation.Persistance
                 users = result;
             else
                 throw new Exception("Пользователей не существует!");
-            List <InfoWork> 
-            if (result.Item2.Exists(i => Users.Exists(u => u.Name != i.Name)) ||
-                result.Item3.Exists(i => Users.Exists(u => u.Name != i.Name)) ||
-                result.Item4.Exists(i => Users.Exists(u => u.Name != i.Name)))
-                throw new Exception("В файлах работ есть неизвестные пользователи!");
-            if (result.Item2 != null)
-                infoWorksHeader = result.Item2;
-            if (result.Item3 != null)
-                infoWorksWorker = result.Item3;
-            if (result.Item4 != null)
-                infoWorksFreelancer = result.Item4;
+            List<InfoWork> resultInfoWork = controllerData.ReadData<InfoWork>();
+            //if (resultHeader.Exists(i => Users.Exists(u => u.Name != i. Name)) ||
+            //    result.Item3.Exists(i => Users.Exists(u => u.Name != i.Name)) ||
+            //    result.Item4.Exists(i => Users.Exists(u => u.Name != i.Name)))
+            //    throw new Exception("В файлах работ есть неизвестные пользователи!");
+            if (resultInfoWork != null)
+                infoWorks = resultInfoWork;
+            //if (result.Item2 != null)
+            //    infoWorksHeader = result.Item2;
+            //if (result.Item3 != null)
+            //    infoWorksWorker = result.Item3;
+            //if (result.Item4 != null)
+            //    infoWorksFreelancer = result.Item4;
         }
 
         //конструктор для тестирования
         internal Model(IModel model)
         {
             users = model.Users;
-            infoWorksHeader = model.InfoWorksHeader;
-            infoWorksWorker = model.InfoWorksWorker;
-            infoWorksFreelancer = model.InfoWorksFreelancer;
+            infoWorks = model.InfoWorks;
         }
 
         //конструктор для тестирования
@@ -85,12 +80,13 @@ namespace wageсalculation.Persistance
 
         public void AddHour(InfoWork w)
         {
-            if (Users.Find(u => u.Name == w.Name).Level==Level.Head)
-                infoWorksHeader.Add(w);
-            else if (Users.Find(u => u.Name == w.Name).Level == Level.Worker)
-                infoWorksWorker.Add(w);
-            else if (Users.Find(u => u.Name == w.Name).Level == Level.Freelancer)        
-                infoWorksFreelancer.Add(w);
+            infoWorks.Add(w);
+            //if (Users.Find(u => u.Name == w.Name).Level==Level.Head)
+            //    infoWorksHeader.Add(w);
+            //else if (Users.Find(u => u.Name == w.Name).Level == Level.Worker)
+            //    infoWorksWorker.Add(w);
+            //else if (Users.Find(u => u.Name == w.Name).Level == Level.Freelancer)        
+            //    infoWorksFreelancer.Add(w);
         }
 
         public void AddUser(User u)

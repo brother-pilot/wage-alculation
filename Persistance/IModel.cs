@@ -9,9 +9,7 @@ namespace wageсalculation.Persistance
     public interface IModel
     {
         List<User> Users { get;  }
-        List<InfoWork> InfoWorksHeader { get;  }
-        List<InfoWork> InfoWorksWorker { get;  }
-        List<InfoWork> InfoWorksFreelancer { get;  }
+        List<InfoWork> InfoWorks { get;  }
         void RecieveDataFromControllerData();
         void SentDataToControllerData();
         void AddHour(InfoWork w);
