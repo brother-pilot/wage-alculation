@@ -57,12 +57,12 @@ namespace TestClass
             throw new NotImplementedException();
         }
 
-        void IModel.RecieveDataFromControllerReader()
+        void IModel.RecieveDataFromControllerData()
         {
             throw new NotImplementedException();
         }
 
-        void IModel.SentDataToControllerReader()
+        void IModel.SentDataToControllerData()
         {
             throw new NotImplementedException();
         }

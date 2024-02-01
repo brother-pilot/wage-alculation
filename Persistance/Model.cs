@@ -29,7 +29,7 @@ namespace wageсalculation.Persistance
             controllerData = new ControllerReaderFromFile();  
         }
 
-        public void RecieveDataFromControllerReader()
+        public void RecieveDataFromControllerData()
         {
             (List<User>, List<InfoWork>, List<InfoWork>, List<InfoWork>) result
                  = controllerData.ReadData();
@@ -37,10 +37,10 @@ namespace wageсalculation.Persistance
                 users = result.Item1;
             else
                 throw new Exception("Пользователей не существует!");
-            //if (result.Item2.Exists(i => Users.(u => u.name != i.Name))||
-            //    result.Item3.Exists(i => Users.Exists(u => u.name != i.Name))||
-            //    result.Item4.Exists(i => Users.Exists(u => u.name != i.Name)))
-            //    throw new Exception("В файлах работ есть неизвестные пользователи!");
+            if (result.Item2.Exists(i => Users.Exists(u => u.Name != i.Name)) ||
+                result.Item3.Exists(i => Users.Exists(u => u.Name != i.Name)) ||
+                result.Item4.Exists(i => Users.Exists(u => u.Name != i.Name)))
+                throw new Exception("В файлах работ есть неизвестные пользователи!");
             if (result.Item2 != null)
                 infoWorksHeader = result.Item2;
             if (result.Item3 != null)
@@ -114,7 +114,7 @@ namespace wageсalculation.Persistance
             return works;
         }
 
-        public void SentDataToControllerReader()
+        public void SentDataToControllerData()
         {
             try
             {

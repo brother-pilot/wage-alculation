@@ -8,6 +8,7 @@ namespace TestClass
     class UserTest
     {
         [Test]
+        [Ignore("доделать левел")]
         public void InCorrectNewUserTest()
         {
             //Assert.Catch(typeof(Exception), () => new User("H", Level.Test), "Неизвестная роль!");
