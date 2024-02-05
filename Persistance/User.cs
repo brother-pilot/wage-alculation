@@ -45,4 +45,6 @@ namespace wageсalculation.Persistance
     //        this.role = level;
     //    }
     //}
+
+    //public static implicit operator User(T u) => new User{ };
 }

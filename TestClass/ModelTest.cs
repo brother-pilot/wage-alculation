@@ -94,8 +94,6 @@ namespace TestClass
             ControllerDataMock.Setup((cr) => cr.ReadData<InfoWork>())
                 .Returns
                 (new List<InfoWork> { new InfoWork(DateTime.Now, "UnKnownUser", 1, "Work") }//,
-                    //model.InfoWorksWorker,
-                   // model.InfoWorksFreelancer
                 );
             TestDelegate result = () => model.RecieveDataFromControllerData();
             Assert.Catch(typeof(Exception),result);

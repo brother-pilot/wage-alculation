@@ -30,22 +30,6 @@ namespace TestClass
              new InfoWork(DateTime.Today, "FTest", 12, "Work3"),
             };
 
-        //public List<InfoWork> InfoWorksWorker =>
-        //    new List<InfoWork>
-        //    {
-        //     new InfoWork(DateTime.Today, "WTest", 24, "Work1"),
-        //     new InfoWork(DateTime.Today, "WTest", 8, "Work2"),
-        //     new InfoWork(DateTime.Today, "WTest", 12, "Work3"),
-        //    };
-
-        //public List<InfoWork> InfoWorksFreelancer =>
-        //    new List<InfoWork>
-        //    {
-        //     new InfoWork(DateTime.Today, "FTest", 24, "Work1"),
-        //     new InfoWork(DateTime.Today, "FTest", 8, "Work2"),
-        //     new InfoWork(DateTime.Today, "FTest", 12, "Work3"),
-        //    };
-
         
 
     public void AddHour(InfoWork w)

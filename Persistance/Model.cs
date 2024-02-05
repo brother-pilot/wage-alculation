@@ -32,18 +32,10 @@ namespace wageсalculation.Persistance
             else
                 throw new Exception("Пользователей не существует!");
             List<InfoWork> resultInfoWork = controllerData.ReadData<InfoWork>();
-            //if (resultHeader.Exists(i => Users.Exists(u => u.Name != i. Name)) ||
-            //    result.Item3.Exists(i => Users.Exists(u => u.Name != i.Name)) ||
-            //    result.Item4.Exists(i => Users.Exists(u => u.Name != i.Name)))
-            //    throw new Exception("В файлах работ есть неизвестные пользователи!");
+            if (resultInfoWork.Exists(i => Users.Exists(u => u.Name != i. Name)))
+             throw new Exception("В файлах работ есть неизвестные пользователи!");
             if (resultInfoWork != null)
                 infoWorks = resultInfoWork;
-            //if (result.Item2 != null)
-            //    infoWorksHeader = result.Item2;
-            //if (result.Item3 != null)
-            //    infoWorksWorker = result.Item3;
-            //if (result.Item4 != null)
-            //    infoWorksFreelancer = result.Item4;
         }
 
         //конструктор для тестирования
@@ -81,12 +73,6 @@ namespace wageсalculation.Persistance
         public void AddHour(InfoWork w)
         {
             infoWorks.Add(w);
-            //if (Users.Find(u => u.Name == w.Name).Level==Level.Head)
-            //    infoWorksHeader.Add(w);
-            //else if (Users.Find(u => u.Name == w.Name).Level == Level.Worker)
-            //    infoWorksWorker.Add(w);
-            //else if (Users.Find(u => u.Name == w.Name).Level == Level.Freelancer)        
-            //    infoWorksFreelancer.Add(w);
         }
 
         public void AddUser(User u)
@@ -100,22 +86,17 @@ namespace wageсalculation.Persistance
 
         public List<InfoWork> MakeReport(User u,DateTime from, DateTime to)
         {
-            List<InfoWork> works=new List<InfoWork>();
-            if (Users.Find(user => user == u).Level == Level.Head)
-                works = infoWorksHeader.Where(w=>w.Data>=from&& w.Data<=to).ToList();
-            else if (Users.Find(user => user == u).Level == Level.Worker)
-                works = infoWorksWorker.Where(w => w.Data >= from && w.Data <= to).ToList();
-            else if (Users.Find(user => user == u).Level == Level.Freelancer)
-                works = infoWorksFreelancer.Where(w => w.Data >= from && w.Data <= to).ToList();
-            return works;
+            return infoWorks.Where(w => w.Name == u.Name && w.Data >= from && w.Data <= to).ToList();
         }
 
         public void SentDataToControllerData()
         {
             try
             {
-                bool result= controllerData.WriteData(users, infoWorksHeader, infoWorksWorker, infoWorksFreelancer);
-                if (!result) throw new Exception("Не удалось сохранить данные!");
+                bool resultU= controllerData.WriteData<User>(users);
+                bool resultI = controllerData.WriteData<InfoWork>(infoWorks);
+                if (!resultU) throw new Exception("Не удалось сохранить данные!");
+                if (!resultI) throw new Exception("Не удалось сохранить данные!");
             }
             catch
             {
