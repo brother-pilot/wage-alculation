@@ -11,7 +11,7 @@ using wageсalculation.Persistance;
 namespace TestClass
 {
     [TestFixture]
-    class ControllerReaderTest
+    class ControllerReaderFromFileTest
     {
         ControllerReaderFromFile cr;
         IModel mod;
