@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-
+using wageсalculation.Persistance.Controllers;
 
 namespace wageсalculation.Persistance
 {
@@ -14,20 +14,20 @@ namespace wageсalculation.Persistance
         /// <summary>
         /// Class for safe data
         /// </summary>
-        List<User> users = new List<User>();
+        List<CurrentUser> users = new List<CurrentUser>();
         List<InfoWork> infoWorks = new List<InfoWork>();
-        public List<User> Users { get { return users; } } 
+        public List<CurrentUser> Users { get { return users; } } 
         public List<InfoWork> InfoWorks { get { return infoWorks; } } 
 
         public Model()
         {
-            controllerData = new ControllerReaderFromFile();  
+            controllerData = new ControllerData();  
         }
 
         public void RecieveDataFromControllerData()
         {
-            List<User> result  = controllerData.ReadData<User>();
-            if (result != null)
+            List<CurrentUser> result  = controllerData.ReadData<CurrentUser>();
+            if (result != null&&result.Count!=0)
                 users = result;
             else
                 throw new Exception("Пользователей не существует!");
@@ -75,16 +75,16 @@ namespace wageсalculation.Persistance
             infoWorks.Add(w);
         }
 
-        public void AddUser(User u)
+        public void AddUser(CurrentUser u)
         {
-            while (Users.Exists(user => user.Name == u.Name))
+            while (Users.Exists(users => users.Name == u.Name))
             {
                 throw new Exception("Такой пользователь уже есть!");
             }
             users.Add(u);
         }
 
-        public List<InfoWork> MakeReport(User u,DateTime from, DateTime to)
+        public List<InfoWork> MakeReport(CurrentUser u,DateTime from, DateTime to)
         {
             return infoWorks.Where(w => w.Name == u.Name && w.Data >= from && w.Data <= to).ToList();
         }
@@ -93,7 +93,7 @@ namespace wageсalculation.Persistance
         {
             try
             {
-                bool resultU= controllerData.WriteData<User>(users);
+                bool resultU= controllerData.WriteData<CurrentUser>(Users);
                 bool resultI = controllerData.WriteData<InfoWork>(infoWorks);
                 if (!resultU) throw new Exception("Не удалось сохранить данные!");
                 if (!resultI) throw new Exception("Не удалось сохранить данные!");

@@ -10,7 +10,11 @@ namespace TestClass.Controller
 {
     class ContextForTest : DbContext
     {
-        public DbSet<User> Users { get; set; }
+        public DbSet<CurrentUser> CurrentUsers { get; set; }
+
+        public DbSet<Role> Roles { get; set; }
+
+        public DbSet<Wage> Wages { get; set; }
         public DbSet<InfoWork> InfoWorks { get; set; }
 
         public ContextForTest()
@@ -20,7 +24,7 @@ namespace TestClass.Controller
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TestDB_001;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=WageCalcTestDB;Trusted_Connection=True;");
 
         }
     }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using wageсalculation.Persistance;
+using wageсalculation.Persistance.Controllers;
 
 namespace TestClass
 {
@@ -24,7 +25,7 @@ namespace TestClass
             var scr = new StubControllerReader();
             cr = new ControllerReaderFromFile(scr,scr.PathModel);
             mod = new StubModel();
-            fileUser = Path.Combine(cr.PathModel, "users.csv");
+            fileUser = Path.Combine(cr.PathModel, "currentusers.csv");
             fileInfoWorks = Path.Combine(cr.PathModel, "infoWorks.csv");
         }
 
@@ -32,7 +33,7 @@ namespace TestClass
         [Category("Itegration")]
         public void Step1CheckFilesExistsAfterSaveTest()
         {
-            cr.WriteData<User>(mod.Users);
+            cr.WriteData<CurrentUser>(mod.Users);
             cr.WriteData<InfoWork>(mod.InfoWorks);
             Assert.AreEqual(true, File.Exists(fileUser));
             Assert.AreEqual(true, File.Exists(fileInfoWorks));
@@ -42,7 +43,7 @@ namespace TestClass
         [Category("Itegration")]
         public void Step2CheckReadingFilesAfterSaveTest()
         {
-            List<User> result = cr.ReadData<User>();
+            List<CurrentUser> result = cr.ReadData<CurrentUser>();
             Assert.AreEqual(mod.Users.Count, result.Count);
             for (int i = 0; i < mod.Users.Count; i++)
                 Assert.IsTrue(mod.Users[0].Name == result[0].Name);

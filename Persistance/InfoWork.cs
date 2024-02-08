@@ -1,10 +1,15 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace wageсalculation.Persistance
 {
     public class InfoWork
     {
+        //для EF
+        public int Id { get; set; }
+        [Required]
         public DateTime Data { get;  }
+        [Required]
         public string Name { get;  }
 
         private int time;
@@ -20,8 +25,12 @@ namespace wageсalculation.Persistance
             }
         }
 
-        public string Work { get;  }
+        public string Work { get; }
 
+        //для EF
+        public InfoWork()
+        {
+        }
         public InfoWork(DateTime Data, string Name, int Time, string Work)
         {
             this.Data = Data;

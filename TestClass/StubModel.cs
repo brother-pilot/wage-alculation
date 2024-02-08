@@ -8,12 +8,12 @@ namespace TestClass
 {
     internal class StubModel : IModel
     {
-        public List<User> Users =>
-            new List<User>
+        public List<CurrentUser> Users =>
+            new List<CurrentUser>
             {
-             new User("HTest",Level.Head),
-             new User("WTest",Level.Worker),
-             new User("FTest",Level.Freelancer)
+             new CurrentUser("HTest",Level.Head),
+             new CurrentUser("WTest",Level.Worker),
+             new CurrentUser("FTest",Level.Freelancer)
             };
 
         public List<InfoWork> InfoWorks =>
@@ -37,12 +37,12 @@ namespace TestClass
             throw new NotImplementedException();
         }
 
-        public void AddUser(User u)
+        public void AddUser(CurrentUser u)
         {
             throw new NotImplementedException();
         }
 
-        public List<InfoWork> MakeReport(User u, DateTime from, DateTime to)
+        public List<InfoWork> MakeReport(CurrentUser u, DateTime from, DateTime to)
         {
             throw new NotImplementedException();
         }

@@ -4,7 +4,9 @@ using System.Collections.Generic;
 namespace wageсalculation.Persistance
 {
     public class Role
-    {  
+    {
+        //для EF
+        public int Id { get; set; }
         //класс для соединения сущностей Header, Worker, Freelancer вместе+для уменьшения
         //дублирования кода в этих сущностях
         public Wage wage;
@@ -22,5 +24,8 @@ namespace wageсalculation.Persistance
             {Command.MakeReportAllUsers,"Просмотреть отчет по всем сотрудникам"},
             {Command.Exit,"Выход из программы"}
         };
+
+        public int? CurrentUserId { get; set; } // внешний ключ
+        public CurrentUser CurrentUser { get; set; }  // навигационное свойство
     }
 }

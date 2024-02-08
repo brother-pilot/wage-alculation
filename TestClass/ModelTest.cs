@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using wageсalculation.Persistance;
+using wageсalculation.Persistance.Controllers;
 
 namespace TestClass
 {
@@ -40,7 +41,7 @@ namespace TestClass
         [Test]
         public void AddAnotherUserTest()
         {
-            User newUser = new User("WTest2", Level.Worker);
+            CurrentUser newUser = new CurrentUser("WTest2", Level.Worker);
             mod.AddUser(newUser);
             Assert.Contains(newUser, mod.Users);
             Assert.AreEqual(4, mod.Users.Count);
@@ -49,7 +50,7 @@ namespace TestClass
         [Test]
         public void AddExistUserTest()
         {
-            User newUser = new User("WTest", Level.Worker);
+            CurrentUser newUser = new CurrentUser("WTest", Level.Worker);
             Assert.Catch(
                 typeof(Exception),
                 () => mod.AddUser(newUser),
@@ -72,8 +73,10 @@ namespace TestClass
         //[Ignore("TO DO")]
         public void RecieveDataWithEmptyUserListFromControllerDataTest1()
         {
-            var ControllerReaderMock = new Mock<IControllerData>();
-            Model model = new Model(ControllerReaderMock.Object);
+            var ControllerDataMock = new Mock<IControllerData>();
+            Model model = new Model(ControllerDataMock.Object);
+            ControllerDataMock.Setup((cr) => cr.ReadData<CurrentUser>())
+                .Returns(new List<CurrentUser>());
             TestDelegate result = () => model.RecieveDataFromControllerData();
             Assert.Catch(
                 typeof(Exception),
@@ -89,8 +92,8 @@ namespace TestClass
         {
             var ControllerDataMock = new Mock<IControllerData>();
             Model model = new Model(ControllerDataMock.Object);
-            ControllerDataMock.Setup((cr) => cr.ReadData<User>())
-                .Returns(new List<User> { new User("HTest", Level.Head) });
+            ControllerDataMock.Setup((cr) => cr.ReadData<CurrentUser>())
+                .Returns(new List<CurrentUser> { new CurrentUser("HTest", Level.Head) });
             ControllerDataMock.Setup((cr) => cr.ReadData<InfoWork>())
                 .Returns
                 (new List<InfoWork> { new InfoWork(DateTime.Now, "UnKnownUser", 1, "Work") }//,
@@ -115,7 +118,7 @@ namespace TestClass
             //если метод возщает void то ответ null
             Model model = new Model(ControllerReaderMock.Object);
             //задаем что нам должен ответить метод WriteFiles из мока
-            ControllerReaderMock.Setup((cr) => cr.WriteData<User>(model.Users)).
+            ControllerReaderMock.Setup((cr) => cr.WriteData<CurrentUser>(model.Users)).
                 Throws(new Exception("Не удалось сохранить данные в файл!"));
             TestDelegate result = () => model.SentDataToControllerData();
             //внимание!!! проверяет только тип исключения!!!

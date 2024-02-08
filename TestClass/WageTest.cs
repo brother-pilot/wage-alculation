@@ -54,7 +54,7 @@ namespace TestClass
         [TestCase(200000, 160)]
         public void WageMonthForHeaderTest1(decimal result,int time)
         {
-            var user = new User("H",Level.Head);
+            var user = new CurrentUser("H",Level.Head);
             Assert.AreEqual(result,user.Role.wage.PayWage(time));
         }
 
@@ -64,7 +64,7 @@ namespace TestClass
         [TestCase(200000 + 20000 + 125, 160 + 161)]
         public void WageMonthAndBonusForHeaderTest1(decimal result, int time)
         {
-            var user = new User("H", Level.Head);
+            var user = new CurrentUser("H", Level.Head);
             Assert.AreEqual(result, user.Role.wage.PayWage(time));
         }
 
@@ -72,7 +72,7 @@ namespace TestClass
         [TestCase(120000, 160)]
         public void WageMonthForWorkerTest1(decimal result, int time)
         {
-            var user = new User("W", Level.Worker);
+            var user = new CurrentUser("W", Level.Worker);
             Assert.AreEqual(result, user.Role.wage.PayWage(time));
         }
 
@@ -81,7 +81,7 @@ namespace TestClass
         [TestCase(120000 * 2 + 750, 160 + 161)]
         public void WageMonthAndBonusForWorkerTest1(decimal result, int time)
         {
-            var user = new User("W", Level.Worker);
+            var user = new CurrentUser("W", Level.Worker);
             Assert.AreEqual(result, user.Role.wage.PayWage(time));
         }
 
@@ -91,7 +91,7 @@ namespace TestClass
         [TestCase(1000 * 160, 161)]
         public void WageForFreelancerTest1(decimal result, int time)
         {
-            var user = new User("F", Level.Freelancer);
+            var user = new CurrentUser("F", Level.Freelancer);
             Assert.AreEqual(result, user.Role.wage.PayWage(time));
         }
     }

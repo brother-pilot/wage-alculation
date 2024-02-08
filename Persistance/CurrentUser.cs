@@ -2,17 +2,27 @@
 
 namespace wageсalculation.Persistance
 {
-   public class User
+    public class CurrentUser
     {
-        string name;
-        Level level;
-        Role role;
+        //для EF
+        public int Id { get; set; }
+
+        readonly string name;
+        readonly Level level;
+        readonly Role role;
+        //для EF
 
         public string Name { get { return name; } }
         public Level Level { get { return level; } }
         public Role Role { get { return role; } }
 
-        public User(string name, Level level)
+        //для EF
+        public CurrentUser()
+        {
+
+        }
+
+        public CurrentUser(string name, Level level)
         {
             this.name = name;
             this.level = level;
@@ -31,6 +41,8 @@ namespace wageсalculation.Persistance
                     throw new Exception("Неизвестная роль!");
             }
         }
+
+        
     }
 
     //internal class User<T>
@@ -47,4 +59,5 @@ namespace wageсalculation.Persistance
     //}
 
     //public static implicit operator User(T u) => new User{ };
+
 }

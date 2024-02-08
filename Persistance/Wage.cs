@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace wageсalculation.Persistance
 {
@@ -8,12 +9,20 @@ namespace wageсalculation.Persistance
         /// class for wage data and case of culculation
         /// </summary>
         const int hourInMonth= 160;
+
+        //для EF
+        public int Id { get; set; }
         public decimal MonthWage { get; }
         public decimal Bonus { get; }
         public bool IsBonus { get; }
         public bool IsMonthWage { get; }
         public decimal HourWage { get; }
+        
+        //для EF
+        public Wage()
+        {
 
+        }
         public Wage(decimal monthWage, decimal bonus,  
             bool isMonthWage = true, bool isBonus=true,decimal hourWage =0)
         {
@@ -42,6 +51,12 @@ namespace wageсalculation.Persistance
             else
                 return time * HourWage;
         }
+
+        [NotMapped]
         public decimal DayBonus => Bonus / hourInMonth;
+
+        public int? RoleId { get; set; } // внешний ключ
+        public Role Role { get; set; }  // навигационное свойство
+
     }
 }

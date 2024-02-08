@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using wageсalculation.Persistance.Controllers;
 
 [assembly: InternalsVisibleTo("TestClass")]
 namespace wageсalculation.Persistance
@@ -45,7 +46,7 @@ namespace wageсalculation.Persistance
                     var fileName = Path.Combine(PathModel, typeof(T).Name+"s.csv");
                     var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.None);
                     StreamReader streamR = new StreamReader(fs);
-                    if (typeof(T) == typeof(User))
+                    if (typeof(T) == typeof(CurrentUser))
                     {
                         result = ReadFileUser(streamR) as List<T>; ;
                     }
@@ -78,9 +79,9 @@ namespace wageсalculation.Persistance
         }
 
 
-        List<User> ReadFileUser(StreamReader streamR)
+        List<CurrentUser> ReadFileUser(StreamReader streamR)
         {
-            List<User> users = new List<User>();          
+            List<CurrentUser> users = new List<CurrentUser>();          
             string line;
             while ((line = streamR.ReadLine()) != null)
             {
@@ -99,7 +100,7 @@ namespace wageсalculation.Persistance
                     default:
                         throw new NotImplementedException("Не верная структура файла Users");
                 }
-                users.Add(new User(line.Split(',')[0], item2));
+                users.Add(new CurrentUser(line.Split(',')[0], item2));
             }
             return users;
         }
@@ -117,10 +118,10 @@ namespace wageсalculation.Persistance
                 
                 var fs = new FileStream(fileName, FileMode.OpenOrCreate);
                 StreamWriter streamW = new StreamWriter(fs);
-                if (typeof(T) == typeof(User))
+                if (typeof(T) == typeof(CurrentUser))
                 {
-                    List<User> users = item as List<User>;
-                    users.ForEach(u => streamW.WriteLine(u.Name + "," + Model.ConvertFromLevelToString(u.Level)));
+                    List<CurrentUser> CurrentUsers = item as List<CurrentUser>;
+                    CurrentUsers.ForEach(u => streamW.WriteLine(u.Name + "," + Model.ConvertFromLevelToString(u.Level)));
                 }
                 else if (typeof(T) == typeof(InfoWork))
                 {
@@ -148,5 +149,6 @@ namespace wageсalculation.Persistance
             }
             catch (Exception e) { Console.WriteLine(e.Message); }
         }
+
     }
 }

@@ -9,13 +9,13 @@ using wageсalculation.Persistance;
 namespace TestClass.Controller
 {
     class ControllerReaderDBTest
-    { 
+    {
         IModel mod;
 
         [OneTimeSetUp]
         public void Init()
         {
-                mod = new StubModel();
+            mod = new StubModel();
         }
 
         [Test]
@@ -26,11 +26,19 @@ namespace TestClass.Controller
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
-                db.Users.Add(mod.Users[0]);
+                db.CurrentUsers.Add(mod.Users[0]);
                 db.InfoWorks.Add(mod.InfoWorks[0]);
                 db.SaveChanges();
-                Assert.AreEqual(mod.Users[0], db.Users.First());
+                Assert.AreEqual(mod.Users[0], db.CurrentUsers.First());
                 Assert.AreEqual(mod.InfoWorks[0], db.InfoWorks.First());
+            }
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            using (var db = new ContextForTest())
+            {
                 db.Database.EnsureDeleted();
             }
         }

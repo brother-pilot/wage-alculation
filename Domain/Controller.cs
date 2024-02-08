@@ -10,7 +10,7 @@ namespace wageсalculation.Domain
     {
         private Model mod;
         //активный юзер под которым произошел логин
-        private User user;
+        private CurrentUser currentUser;
         private IView view;//для передачи данных из приложения в UI
 
         //Role userType;
@@ -23,7 +23,7 @@ namespace wageсalculation.Domain
             mod = model;
             mod.RecieveDataFromControllerData();
             view = v;
-            user = Logon();
+            currentUser = Logon();
             InitilizeUserCommand();
             while (true)
             {
@@ -33,7 +33,7 @@ namespace wageсalculation.Domain
             }
         }
 
-        public User Logon()
+        public CurrentUser Logon()
         {
             string name = InputName();
             return mod.Users.Find(u => u.Name == name);
@@ -90,7 +90,7 @@ namespace wageсalculation.Domain
                     PrepareAddUser();
                     break;
                 case Command.MakeReport:
-                    PrepareReport(user);
+                    PrepareReport(currentUser);
                     break;
                 case Command.MakeReportAllUsers:
                     PrepareReportAllUsers();
@@ -121,12 +121,12 @@ namespace wageсalculation.Domain
             while (!Int32.TryParse(view.ReadNotEmptyLine(" "), out kafn) ||
                 kafn < 0 || kafn > levels.Length)
                 Console.WriteLine("Неправильная команда. Введите номер еще раз");
-            mod.AddUser(new User(name, (Level)kafn));
+            mod.AddUser(new CurrentUser(name, (Level)kafn));
         }
 
         public void PrepareReportInOtherUser()
         {
-            User user = Logon();
+            CurrentUser user = Logon();
             PrepareReport(user);
         }
 
@@ -146,14 +146,14 @@ namespace wageсalculation.Domain
             view.PrintFullReport(from, to, res);
         }
 
-        public void PrepareReport(User user)
+        public void PrepareReport(CurrentUser currentuser)
         {
             //DateTime[] dates=InputDates();
             var from = view.ReadNotEmptyDateTime("Введите дату начала отчета в формате ГГГГ.ММ.ДД");
             var to = view.ReadNotEmptyDateTime("Введите дату конца отчета в формате ГГГГ.ММ.ДД");
-            var res=mod.MakeReport(user,from,to);
+            var res=mod.MakeReport(currentuser, from,to);
             int time = res.Sum(i => i.Time);
-            decimal wage=user.Role.wage.PayWage(time);       
+            decimal wage= currentuser.Role.wage.PayWage(time);       
             view.PrintReport(from,to,res,time,wage);
         }
 
@@ -173,7 +173,7 @@ namespace wageсalculation.Domain
         {
             DateTime dt=view.ReadNotEmptyDateTime("Добавляем часы работы. Введите дату работы в формате ГГГГ.ММ.ДД");
             string name;
-            if (user.Role.GetType() == typeof(Header))
+            if (currentUser.Role.GetType() == typeof(Header))
             {
                 name=view.ReadNotEmptyLine("Введите имя пользователя");
                 while (!mod.Users.Exists(u => u.Name == name))
@@ -183,7 +183,7 @@ namespace wageсalculation.Domain
                 }
             }
             else
-                name = user.Name;
+                name = currentUser.Name;
             int hours = -1;
             //если введено неправильно но ходим по циклу
             while (!Int32.TryParse(view.ReadNotEmptyLine("Введите количество отработанных часов"), out hours) || hours < 1 || hours > 24)
@@ -197,9 +197,8 @@ namespace wageсalculation.Domain
         private void InitilizeUserCommand()
         {
             //command["Exit"] = (s) => StopProgram(s as string);
-            int i = 0;
-            foreach (var item in user.Role.Commands)
-                commandAccessKey[item.Key] = user.Role.mesRole[item.Value] ;
+            foreach (var item in currentUser.Role.Commands)
+                commandAccessKey[item.Key] = currentUser.Role.mesRole[item.Value] ;
         }
         void StopProgram(string message)
         {

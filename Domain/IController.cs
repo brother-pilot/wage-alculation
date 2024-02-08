@@ -9,10 +9,10 @@ namespace wageсalculation.Domain
 {
     interface IController
     {
-        User Logon();
+        CurrentUser Logon();
         void PrepareAddHour();
         void PrepareAddUser();
-        void PrepareReport(User user);
+        void PrepareReport(CurrentUser user);
         void PrepareReportInOtherUser();
         void PrepareReportAllUsers();
     }

@@ -8,12 +8,12 @@ namespace wageсalculation.Persistance
 {
     public interface IModel
     {
-        List<User> Users { get;  }
+        List<CurrentUser> Users { get;  }
         List<InfoWork> InfoWorks { get;  }
         void RecieveDataFromControllerData();
         void SentDataToControllerData();
         void AddHour(InfoWork w);
-        void AddUser(User u);
-        List<InfoWork> MakeReport(User u, DateTime from, DateTime to);
+        void AddUser(CurrentUser u);
+        List<InfoWork> MakeReport(CurrentUser u, DateTime from, DateTime to);
     }
 }
