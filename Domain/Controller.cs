@@ -140,7 +140,7 @@ namespace wageсalculation.Domain
             {
                 var item = mod.MakeReport(user, from, to);
                 int time = item.Sum(i => i.Time);
-                decimal wage = user.Role.wage.PayWage(time);
+                decimal wage = user.UserRole.wage.PayWage(time);
                 res.Add((item, time, wage));
             }
             view.PrintFullReport(from, to, res);
@@ -153,7 +153,7 @@ namespace wageсalculation.Domain
             var to = view.ReadNotEmptyDateTime("Введите дату конца отчета в формате ГГГГ.ММ.ДД");
             var res=mod.MakeReport(currentuser, from,to);
             int time = res.Sum(i => i.Time);
-            decimal wage= currentuser.Role.wage.PayWage(time);       
+            decimal wage= currentuser.UserRole.wage.PayWage(time);       
             view.PrintReport(from,to,res,time,wage);
         }
 
@@ -173,7 +173,7 @@ namespace wageсalculation.Domain
         {
             DateTime dt=view.ReadNotEmptyDateTime("Добавляем часы работы. Введите дату работы в формате ГГГГ.ММ.ДД");
             string name;
-            if (currentUser.Role.GetType() == typeof(Header))
+            if (currentUser.UserRole.GetType() == typeof(Header))
             {
                 name=view.ReadNotEmptyLine("Введите имя пользователя");
                 while (!mod.Users.Exists(u => u.Name == name))
@@ -197,8 +197,8 @@ namespace wageсalculation.Domain
         private void InitilizeUserCommand()
         {
             //command["Exit"] = (s) => StopProgram(s as string);
-            foreach (var item in currentUser.Role.Commands)
-                commandAccessKey[item.Key] = currentUser.Role.mesRole[item.Value] ;
+            foreach (var item in currentUser.UserRole.Commands)
+                commandAccessKey[item.Key] = currentUser.UserRole.mesRole[item.Value] ;
         }
         void StopProgram(string message)
         {

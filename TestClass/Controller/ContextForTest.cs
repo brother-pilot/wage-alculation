@@ -33,8 +33,11 @@ namespace TestClass.Controller
             //привязка свойства Id и поля id!!!!!
             modelBuilder.Entity<CurrentUser>().Property("Name").HasField("name");
             modelBuilder.Entity<CurrentUser>().Property("Level").HasField("level");
-            modelBuilder.Entity<CurrentUser>().Property("Role").HasField("role");
+            //modelBuilder.Entity<CurrentUser>().Property("UserRole").HasField("userRole");
+            modelBuilder.Entity<InfoWork>().Property("Data").HasField("data");
+            modelBuilder.Entity<InfoWork>().Property("Name").HasField("name");
             modelBuilder.Entity<InfoWork>().Property("Time").HasField("time");
+            modelBuilder.Entity<InfoWork>().Property("Work").HasField("work");
         }
     }
 }

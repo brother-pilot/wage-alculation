@@ -7,10 +7,17 @@ namespace wageсalculation.Persistance
     {
         //для EF
         public int Id { get; set; }
+
+        DateTime data;
         [Required]
-        public DateTime Data { get;  }
+        public DateTime Data { get { return data; } }
+
+        //чтобы EF потом добавил это свойство в таблицу не забывать в onmodelcreating
+        //Property("Name").HasField("name")
+        string name;
+
         [Required]
-        public string Name { get;  }
+        public string Name { get { return name; } }
 
         private int time;
 
@@ -25,7 +32,8 @@ namespace wageсalculation.Persistance
             }
         }
 
-        public string Work { get; }
+        string work;
+        public string Work { get { return work; } }
 
         //для EF
         public InfoWork()
@@ -33,10 +41,10 @@ namespace wageсalculation.Persistance
         }
         public InfoWork(DateTime Data, string Name, int Time, string Work)
         {
-            this.Data = Data;
-            this.Name = Name;
+            this.data = Data;
+            this.name = Name;
             this.Time = Time;
-            this.Work = Work;
+            this.work = Work;
         }
 
         public InfoWork(string line)
@@ -53,13 +61,13 @@ namespace wageсalculation.Persistance
             //this.Data = new DateTime(20231001);
             if (!DateTime.TryParse(items[0], out dt))
                 throw new Exception("Неверный формат данных строки! неправильная дата"); ;
-            this.Data = dt;
-            this.Name = items[1];
+            this.data = dt;
+            this.name = items[1];
             int t;
             if (!int.TryParse(items[2], out t)) 
                 throw new ArgumentOutOfRangeException("Время работы должно быть числом от 0 до 24");
             this.Time = t;
-            this.Work = items[3];
+            this.work = items[3];
         }
     }
 }
