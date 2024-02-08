@@ -11,7 +11,7 @@ namespace wageсalculation.Persistance.Controllers
     {
         public DbSet<CurrentUser> CurrentUsers { get; set; }
 
-        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
 
         public DbSet<Wage> Wages { get; set; }
         public DbSet<InfoWork> InfoWorks { get; set; }

@@ -9,12 +9,12 @@ namespace wageсalculation.Persistance
 
         readonly string name;
         readonly Level level;
-        readonly Role role;
+        readonly UserRole role;
         //для EF
 
         public string Name { get { return name; } }
         public Level Level { get { return level; } }
-        public Role Role { get { return role; } }
+        public UserRole Role { get { return role; } }
 
         //для EF
         public CurrentUser()

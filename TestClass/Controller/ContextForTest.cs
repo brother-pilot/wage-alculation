@@ -12,7 +12,7 @@ namespace TestClass.Controller
     {
         public DbSet<CurrentUser> CurrentUsers { get; set; }
 
-        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
 
         public DbSet<Wage> Wages { get; set; }
         public DbSet<InfoWork> InfoWorks { get; set; }
@@ -26,6 +26,15 @@ namespace TestClass.Controller
         {
             optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=WageCalcTestDB;Trusted_Connection=True;");
 
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //привязка свойства Id и поля id!!!!!
+            modelBuilder.Entity<CurrentUser>().Property("Name").HasField("name");
+            modelBuilder.Entity<CurrentUser>().Property("Level").HasField("level");
+            modelBuilder.Entity<CurrentUser>().Property("Role").HasField("role");
+            modelBuilder.Entity<InfoWork>().Property("Time").HasField("time");
         }
     }
 }

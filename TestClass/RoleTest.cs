@@ -14,7 +14,7 @@ namespace TestClass
         public void AccordanceMesRoleWithNumberCommandTest()
         {
             var enumCount = Enum.GetNames(typeof(Command)).Length;
-            Assert.AreEqual(enumCount, new Role().mesRole.Count);
+            Assert.AreEqual(enumCount, new UserRole().mesRole.Count);
         }
     }
 }

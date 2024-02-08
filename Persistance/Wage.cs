@@ -56,7 +56,7 @@ namespace wageсalculation.Persistance
         public decimal DayBonus => Bonus / hourInMonth;
 
         public int? RoleId { get; set; } // внешний ключ
-        public Role Role { get; set; }  // навигационное свойство
+        public UserRole UserRole { get; set; }  // навигационное свойство
 
     }
 }

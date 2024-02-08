@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace wageсalculation.Persistance
 {
-    public class Header: Role
+    public class Header: UserRole
     {
         public Header() 
         {
