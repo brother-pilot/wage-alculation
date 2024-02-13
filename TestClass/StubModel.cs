@@ -13,7 +13,8 @@ namespace TestClass
             {
              new CurrentUser("HTest",Level.Head),
              new CurrentUser("WTest",Level.Worker),
-             new CurrentUser("FTest",Level.Freelancer)
+             new CurrentUser("FTest",Level.Freelancer),
+             new CurrentUser("HTest2",Level.Head)
             };
 
         public List<InfoWork> InfoWorks =>

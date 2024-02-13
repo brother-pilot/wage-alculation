@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,11 +27,16 @@ namespace TestClass.Controller
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
-                db.CurrentUsers.Add(mod.Users[0]);
-                db.InfoWorks.Add(mod.InfoWorks[0]);
+                db.CurrentUsers.AddRange(mod.Users);
+                db.InfoWorks.AddRange(mod.InfoWorks);
                 db.SaveChanges();
-                Assert.AreEqual(mod.Users[0], db.CurrentUsers.First());
-                Assert.AreEqual(mod.InfoWorks[0], db.InfoWorks.First());
+                Assert.AreEqual(mod.Users[0].Name, db.CurrentUsers.First().Name);
+                Assert.AreEqual(mod.Users[0].Level, db.CurrentUsers.First().Level);
+                Assert.AreEqual(mod.Users[0].Role.Commands, db.CurrentUsers.First().Role.Commands);
+                Assert.AreEqual(mod.Users[0].Role.Wage.MonthWage, db.CurrentUsers.First().Role.Wage.MonthWage);
+                Assert.AreEqual(mod.InfoWorks[0].Name, db.InfoWorks.First().Name);
+                Assert.AreEqual(mod.InfoWorks[0].Data, db.InfoWorks.First().Data);
+                Assert.AreEqual(mod.InfoWorks[0].Time, db.InfoWorks.First().Time);
             }
         }
 

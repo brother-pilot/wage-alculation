@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace wageсalculation.Persistance
 {
-    public class UserRole
+    public class Role
     {
         //для EF
         public int Id { get; set; }
         //класс для соединения сущностей Header, Worker, Freelancer вместе+для уменьшения
         //дублирования кода в этих сущностях
-        public Wage wage;
+        protected Wage wage;
+        [Required]
+        public Wage Wage { get { return wage; } } //set {; } для EF
         //public string[] methods;
         //public Action<InfoWork> del;
+        [NotMapped]
         public Dictionary<int, Command> Commands { get;} = new Dictionary<int, Command>();
 
+        [NotMapped]
         //возможные действия пользователя
         public readonly Dictionary<Command, string> mesRole = new Dictionary<Command, string>()
         {
@@ -25,7 +31,15 @@ namespace wageсalculation.Persistance
             {Command.Exit,"Выход из программы"}
         };
 
-        public int? CurrentUserId { get; set; } // внешний ключ
-        public CurrentUser CurrentUser { get; set; }  // навигационное свойство
+        //для EF
+        public Role()
+        {
+
+        }
+
+        public virtual CurrentUser CurrentUser { get; set; }  // навигационное свойство
+
+        [ForeignKey("Id")]
+        public int WageId { get; set; } // внешний ключ
     }
 }

@@ -44,7 +44,7 @@ namespace TestClass
             CurrentUser newUser = new CurrentUser("WTest2", Level.Worker);
             mod.AddUser(newUser);
             Assert.Contains(newUser, mod.Users);
-            Assert.AreEqual(4, mod.Users.Count);
+            Assert.AreEqual(5, mod.Users.Count);
         }
 
         [Test]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace wageсalculation.Persistance
 {
@@ -11,12 +12,14 @@ namespace wageсalculation.Persistance
         //все трое должны бить readonly но EF не позволяет так сделать
         string name;
         Level level;
-        UserRole userRole;
+        //URole uRole;
 
         [Required]
         public string Name { get { return name; } }
+        [Required]
         public Level Level { get { return level; } }
-        public UserRole UserRole { get { return userRole; } }
+        [Required]
+        public Role Role { get; set; }//{ get { return uRole; } set {; } }
 
         //для EF
         public CurrentUser()
@@ -31,20 +34,20 @@ namespace wageсalculation.Persistance
             switch (level)
             {
                 case Level.Head:
-                    userRole = new Header();
+                    Role = new Header();
                     break;
                 case Level.Worker:
-                    userRole = new Worker();
+                    Role = new Worker();
                     break;
                 case Level.Freelancer:
-                    userRole = new Freelancer();
+                    Role = new Freelancer();
                     break;
                 default:
                     throw new Exception("Неизвестная роль!");
             }
         }
 
-        
+        public int URoleId { get; set; } // внешний (Forien) ключ
     }
 
     //internal class User<T>
@@ -61,5 +64,5 @@ namespace wageсalculation.Persistance
     //}
 
     //public static implicit operator User(T u) => new User{ };
-
+    
 }

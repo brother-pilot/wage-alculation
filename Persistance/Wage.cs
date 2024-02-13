@@ -12,11 +12,17 @@ namespace wageсalculation.Persistance
 
         //для EF
         public int Id { get; set; }
-        public decimal MonthWage { get; }
-        public decimal Bonus { get; }
-        public bool IsBonus { get; }
-        public bool IsMonthWage { get; }
-        public decimal HourWage { get; }
+
+        decimal monthWage;
+        public decimal MonthWage { get { return monthWage; } }
+        decimal bonus;
+        public decimal Bonus { get { return bonus; } }
+        bool isBonus;
+        public bool IsBonus { get { return isBonus; }  }
+        bool isMonthWage;
+        public bool IsMonthWage { get { return isMonthWage; } }
+        decimal hourWage;
+        public decimal HourWage { get { return hourWage; } }
         
         //для EF
         public Wage()
@@ -32,11 +38,11 @@ namespace wageсalculation.Persistance
                 throw new Exception("При работе по часовой оплате оплата часа не может быть 0");
             if (monthWage != 0 && hourWage != 0)
                 throw new Exception("Работник должен работать или по окладу или по часовой ставке");
-            MonthWage = monthWage;
-            Bonus = bonus;
-            IsBonus = isBonus;
-            IsMonthWage = isMonthWage;
-            HourWage = IsMonthWage ==true?MonthWage / hourInMonth : hourWage;
+            this.monthWage = monthWage;
+            this.bonus = bonus;
+            this.isBonus = isBonus;
+            this.isMonthWage = isMonthWage;
+            this.hourWage = IsMonthWage ==true?MonthWage / hourInMonth : hourWage;
         }
 
         public decimal PayWage(int time)
@@ -55,8 +61,8 @@ namespace wageсalculation.Persistance
         [NotMapped]
         public decimal DayBonus => Bonus / hourInMonth;
 
-        public int? RoleId { get; set; } // внешний ключ
-        public UserRole UserRole { get; set; }  // навигационное свойство
+        public virtual Role Role { get; set; }  // навигационное свойство
+        
 
     }
 }

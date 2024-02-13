@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace wageсalculation.Persistance
 {
-    public class Header: UserRole
+    public class Header : Role
     {
         public Header() 
         {
@@ -23,6 +23,5 @@ namespace wageсalculation.Persistance
             Commands[5] = Command.MakeReportAllUsers;
         }
 
-        
     }
 }

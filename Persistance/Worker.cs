@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace wageсalculation.Persistance
 {
-    public class Worker : UserRole
+    public class Worker : Role
     {
         //public string[] methods { get; set; }
         public Worker()
