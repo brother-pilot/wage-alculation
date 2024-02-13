@@ -12,14 +12,15 @@ namespace wageсalculation.Persistance
         //все трое должны бить readonly но EF не позволяет так сделать
         string name;
         Level level;
-        //URole uRole;
+        [NotMapped]
+        Role role;
 
         [Required]
         public string Name { get { return name; } }
         [Required]
         public Level Level { get { return level; } }
-        [Required]
-        public Role Role { get; set; }//{ get { return uRole; } set {; } }
+        [NotMapped]
+        public Role Role { get { return role; } }
 
         //для EF
         public CurrentUser()
@@ -34,20 +35,19 @@ namespace wageсalculation.Persistance
             switch (level)
             {
                 case Level.Head:
-                    Role = new Header();
+                    role = new Header();
                     break;
                 case Level.Worker:
-                    Role = new Worker();
+                    role = new Worker();
                     break;
                 case Level.Freelancer:
-                    Role = new Freelancer();
+                    role = new Freelancer();
                     break;
                 default:
                     throw new Exception("Неизвестная роль!");
             }
         }
 
-        public int URoleId { get; set; } // внешний (Forien) ключ
     }
 
     //internal class User<T>

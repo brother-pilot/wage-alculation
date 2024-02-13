@@ -15,7 +15,7 @@ namespace wageсalculation.Persistance.Controllers
 
         public List<T> ReadData<T>() where T : class
         {
-            var dataFromFile=managerReaderFromFile.ReadData<T>();
+            var dataFromFile = managerReaderFromFile.ReadData<T>();
             var dataFromDB = managerReaderDB.ReadData<T>();
             if (dataFromFile.Count == dataFromDB.Count&& dataFromFile[0].Equals(dataFromDB[0])
                 && dataFromFile[dataFromFile.Count-1].Equals(dataFromDB.Count - 1))

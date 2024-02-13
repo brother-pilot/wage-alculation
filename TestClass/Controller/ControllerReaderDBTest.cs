@@ -32,8 +32,6 @@ namespace TestClass.Controller
                 db.SaveChanges();
                 Assert.AreEqual(mod.Users[0].Name, db.CurrentUsers.First().Name);
                 Assert.AreEqual(mod.Users[0].Level, db.CurrentUsers.First().Level);
-                Assert.AreEqual(mod.Users[0].Role.Commands, db.CurrentUsers.First().Role.Commands);
-                Assert.AreEqual(mod.Users[0].Role.Wage.MonthWage, db.CurrentUsers.First().Role.Wage.MonthWage);
                 Assert.AreEqual(mod.InfoWorks[0].Name, db.InfoWorks.First().Name);
                 Assert.AreEqual(mod.InfoWorks[0].Data, db.InfoWorks.First().Data);
                 Assert.AreEqual(mod.InfoWorks[0].Time, db.InfoWorks.First().Time);

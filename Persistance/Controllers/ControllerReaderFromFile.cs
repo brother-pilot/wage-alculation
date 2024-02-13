@@ -65,7 +65,7 @@ namespace wageсalculation.Persistance
                 }
                 catch (Exception)
                 {
-
+                    Console.WriteLine($"Не верная структура файла {typeof(T).Name}s.scv");
                     throw new NotImplementedException($"Не верная структура файла {typeof(T).Name}s.scv"); ;
                 }  
             }
