@@ -11,15 +11,17 @@ namespace wageсalculation.Persistance.Controllers
     {
         public DbSet<CurrentUser> CurrentUsers { get; set; }
         public DbSet<InfoWork> InfoWorks { get; set; }
-
+        
         public Context()
         {
-            Database.EnsureCreated();
+            //когда используем миграции то это должно быть отключено
+            //Database.EnsureCreated();
+            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=WageCalculationDB;Trusted_Connection=True;");
+            optionsBuilder. UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=WageCalculationDB;Trusted_Connection=True;");
 
         }
 

@@ -33,6 +33,8 @@ namespace wageсalculation.Persistance
         }
 
         string work;
+
+        //[Required]
         public string Work { get { return work; } }
 
         //для EF
