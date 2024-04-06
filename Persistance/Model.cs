@@ -32,8 +32,12 @@ namespace wageсalculation.Persistance
             else
                 throw new Exception("Пользователей не существует!");
             List<InfoWork> resultInfoWork = controllerData.ReadData<InfoWork>();
-            if (resultInfoWork.Exists(i => Users.Exists(u => u.Name != i. Name)))
-             throw new Exception("В файлах работ есть неизвестные пользователи!");
+            //TO DO доделать проверку файла с работами
+            //if (resultInfoWork.Exists(i => Users.Select(u=>u.Name)
+            //                                    .Contains(i.Name)
+            //                                    )
+            //    )
+            // throw new Exception("В файлах работ есть неизвестные пользователи!");
             if (resultInfoWork != null)
                 infoWorks = resultInfoWork;
         }

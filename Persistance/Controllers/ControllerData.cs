@@ -17,11 +17,14 @@ namespace wageсalculation.Persistance.Controllers
         {
             var dataFromFile = managerReaderFromFile.ReadData<T>();
             var dataFromDB = managerReaderDB.ReadData<T>();
-            if (dataFromFile.Count == dataFromDB.Count&& dataFromFile[0].Equals(dataFromDB[0])
-                && dataFromFile[dataFromFile.Count-1].Equals(dataFromDB.Count - 1))
+            if (dataFromFile.Count==0)
+                return dataFromFile;
+            if (dataFromFile.Count == dataFromDB.Count && dataFromFile[0].Equals(dataFromDB[0])
+                && dataFromFile[dataFromFile.Count - 1].Equals(dataFromDB.Count - 1))
                 return dataFromDB;
             else
-                throw new NotImplementedException("Разные данные в файлах и БД!");
+                //throw new NotImplementedException("Разные данные в файлах и БД!");
+                return dataFromFile;
         }
 
         public bool WriteData<T>(List<T> item) where T : class

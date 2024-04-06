@@ -15,13 +15,13 @@ namespace wageсalculation.Persistance.Controllers
         public Context()
         {
             //когда используем миграции то это должно быть отключено
-            //Database.EnsureCreated();
-            
+            if (Database.EnsureCreated()) 
+                Console.WriteLine("База данных не существовала, поэтому она была создана");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder. UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=WageCalculationDB;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=WageCalculationDB;Trusted_Connection=True;");
 
         }
 
